@@ -58,3 +58,14 @@ Vue.filter('moneyDecFormat', function (value) {
   }
 })
 
+/**
+ * 金额格式化（保存不同位小数）
+ *  value 金额，以分为单位
+ */
+Vue.filter('toArray', function (value) {
+  var array = []
+  value.forEach(function (value, key) {
+  })
+  return array
+})
+

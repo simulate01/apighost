@@ -70,54 +70,10 @@
                 <span class="help-block">We also use email for avatar detection if no avatar is uploaded.</span>
               </div>
               <div class="form-group">
-                <label class="label-light" for="user_public_email">Public email</label>
-                <div class="select2-container select2" id="s2id_user_public_email" style="width: 240px;"><a
-                    href="javascript:void(0)" class="select2-choice" tabindex="-1"> <span class="select2-chosen"
-                                                                                          id="select2-chosen-1">kunming.wangkm@ymm56.com</span><abbr
-                    class="select2-search-choice-close"></abbr> <span class="select2-arrow" role="presentation"><b
-                    role="presentation"></b></span></a><label for="s2id_autogen1" class="select2-offscreen">Public
-                  email</label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true"
-                                      role="button" aria-labelledby="select2-chosen-1" id="s2id_autogen1">
-                  <div class="select2-drop select2-display-none select2-with-searchbox">
-                    <div class="select2-search"><label for="s2id_autogen1_search" class="select2-offscreen">Public
-                      email</label> <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off"
-                                           spellcheck="false" class="select2-input" role="combobox" aria-expanded="true"
-                                           aria-autocomplete="list" aria-owns="select2-results-1"
-                                           id="s2id_autogen1_search" placeholder=""></div>
-                    <ul class="select2-results" role="listbox" id="select2-results-1"></ul>
-                  </div>
-                </div>
-                <select class="select2" name="user[public_email]" id="user_public_email" tabindex="-1"
-                        title="Public email" style="display: none;">
-                  <option value="">Do not show on profile</option>
-                  <option selected="selected" value="kunming.wangkm@ymm56.com">kunming.wangkm@ymm56.com</option>
-                </select>
-                <span class="help-block">This email will be displayed on your public profile.</span>
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_skype">Skype</label>
-                <input class="form-control" type="text" value="" name="user[skype]" id="user_skype">
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_linkedin">Linkedin</label>
-                <input class="form-control" type="text" value="" name="user[linkedin]" id="user_linkedin">
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_twitter">Twitter</label>
-                <input class="form-control" type="text" value="" name="user[twitter]" id="user_twitter">
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_website_url">Website</label>
-                <input class="form-control" type="text" value="" name="user[website_url]" id="user_website_url">
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_location">Location</label>
-                <input class="form-control" type="text" value="" name="user[location]" id="user_location">
-              </div>
-              <div class="form-group">
-                <label class="label-light" for="user_bio">Bio</label>
-                <textarea rows="4" class="form-control" maxlength="250" name="user[bio]" id="user_bio"></textarea>
-                <span class="help-block">Tell us about yourself in fewer than 250 characters.</span>
+                <label class="label-light" for="user_email">Account</label>
+                <input class="form-control" required="required" type="text" value="kunming.wangkm@ymm56.com"
+                       name="user[email]" id="user_account">
+                <span class="help-block">We also use email for avatar detection if no avatar is uploaded.</span>
               </div>
               <div class="prepend-top-default append-bottom-default">
                 <input type="submit" name="commit" value="Update profile settings" class="btn btn-success">

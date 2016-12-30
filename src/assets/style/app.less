@@ -1,9 +1,9 @@
 
-.nav-links.el-tabs{
+.nav-links.el-tabs {
 
 }
 
-.nav-links.el-tabs .el-tabs__header{
+.nav-links.el-tabs .el-tabs__header {
   border: 0;
   margin: 0;
 }
@@ -14,13 +14,45 @@
   font-size: 16px;
 }
 
-.nav-links.el-tabs .el-tabs__active-bar{
+.nav-links.el-tabs .el-tabs__active-bar {
   bottom: -4px;
 }
 
-
 /*=========api 列表展示样式========*/
-.paths{
-  .path{
+.paths {
+  .path {
+    list-style: none;
+    .operations {
+      .operation {
+        list-style: none;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        header {
+          padding: 10px;
+          color: #ffffff;
+          border-bottom: 1px solid #ddd;
+          position: relative;
+          .edit {
+            position: absolute;
+            right: 30px;
+            top:10px;
+            color: #ffffff;
+          }
+        }
+        .content {
+          padding: 10px;
+        }
+        &.post {
+          header {
+            background-color: #dd8a2e;
+          }
+        }
+        &.get {
+          header {
+            background-color: #0a8edd;
+          }
+        }
+      }
+    }
   }
 }

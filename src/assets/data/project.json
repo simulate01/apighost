@@ -6,6 +6,48 @@
   "createTime": 1481870187006,
   "paths": {
     "/products": {
+      "post": {
+        "description": "The Products endpoint returns information about the *Uber* products\noffered at a given location. The response includes the display name\nand other details about each product, and lists the products in the\nproper display order.\n",
+        "summary": "Product Types",
+        "responses": {
+          "200": {
+            "description": "An array of products",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "description": "Latitude component of location.",
+            "format": "double",
+            "required": true,
+            "type": "number",
+            "name": "latitude"
+          },
+          {
+            "in": "query",
+            "description": "Longitude component of location.",
+            "format": "double",
+            "required": true,
+            "type": "number",
+            "name": "longitude"
+          }
+        ],
+        "tags": [
+          "Products"
+        ]
+      },
       "get": {
         "description": "The Products endpoint returns information about the *Uber* products\noffered at a given location. The response includes the display name\nand other details about each product, and lists the products in the\nproper display order.\n",
         "summary": "Product Types",

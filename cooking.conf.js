@@ -41,7 +41,6 @@ cooking.set({
     log: false,
     publicPath: '/',
     hostname: getIPAdress()
-
   },
 
   // production

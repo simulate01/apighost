@@ -6,6 +6,12 @@ abbrev@1:
   version "1.0.9"
   resolved "http://192.168.199.131:4873/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
 
+ace-code-editor@^1.2.3:
+  version "1.2.3"
+  resolved "http://192.168.199.131:4873/ace-code-editor/-/ace-code-editor-1.2.3.tgz#a65a533879d6e0f9fdb5e712d2ee46b2079a51de"
+  dependencies:
+    mime "1.2.x"
+
 acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "http://192.168.199.131:4873/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"
@@ -813,6 +819,10 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
+
+mime@1.2.x:
+  version "1.2.11"
+  resolved "http://192.168.199.131:4873/mime/-/mime-1.2.11.tgz#58203eed86e3a5ef17aed2b7d9ebd47f0a60dd10"
 
 minimatch@^3.0.2:
   version "3.0.3"

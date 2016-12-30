@@ -108,21 +108,21 @@ Members</span> </a></li>
           </div>
 
           <div class="container-fluid container-limited">
-            <ul class="paths" collapse-when="specs.paths.$folded" style="">
+            <ul class="paths" style="">
               <li class="path" v-for="(path,pathName) in paths">
                 <header><h2><a>{{pathName}}</a></h2>
                   <a class="jump-to-yaml" tooltip-trigger="mouseenter"> </a>
                 </header>
-                <ul class="operations" style="">
-                  <li class="get operation" v-for="(operation,operationName) in path">
-                    <header>
+                <ul class="operations">
+                  <li :class="[operationName]" class="operation" v-for="(operation,operationName) in path">
+                    <header @click="$set(operation,'_showOperations',!operation._showOperations)">
                       <a class="focus-editor" tooltip-trigger="mouseenter"> </a>
                       <div class="http-method">{{operationName}} {{pathName}}</div>
+                      <router-link class="edit" :to="{path:'/api_new',query:{edit:true}}">
+                        <i class="fa fa-edit"></i>
+                      </router-link>
                     </header>
-                    <div class="content" style="">
-                      <!--<div class="tags">
-                        <span class="tag tag-color-0" v-for="tag in operation.tags track by $index"> Products </span>
-                      </div>-->
+                    <div class="content" v-if="operation._showOperations">
                       <section class="summary" v-if="operation.summary"><h4>Summary</h4>
                         <p>{{operation.summary}}</p></section>
                       <section class="description" v-if="operation.description"><h4>Description</h4>
@@ -133,149 +133,150 @@ Members</span> </a></li>
                       <section class="parameters">
                         <h4>Parameters</h4>
                         <div>
-                          <table class="params">
-                            <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Located in</th>
-                              <th>Description</th>
-                              <th>Required</th>
-                              <th>Schema</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="parameter in operation.parameters">
-                              <td>
-                                <a tooltip-trigger="mouseenter">
-                                  <span class="mono">{{parameter.name}}</span>
-                                </a>
-                              </td>
-                              <td>{{parameter.in}}</td>
-                              <td>
-                                <p>{{parameter.description}}</p>
-                              </td>
-                              <td>{{parameter.required}}</td>
-                              <td>
-                                <table class="schema-model">
-                                  <tbody>
-                                  <tr>
-                                    <td>
-                                      <a class="toggle" @click="parameter.mode=!parameter.mode" title="Switch to json"> ⇄ </a></td>
-                                    <td class="view json ng-hide" v-show="parameter.mode">
-                                      <div class="json-formatter-row json-formatter-open"><a
-                                          class="json-formatter-toggler-link"><span
-                                          class="json-formatter-toggler"></span><span
-                                          class="json-formatter-value"><span><span
-                                          class="json-formatter-constructor-name">Object</span></span></span></a>
-                                        <div class="json-formatter-children json-formatter-object">
-                                          <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
-                                              class="json-formatter-key">type:</span><span
-                                              class="json-formatter-string">"number"</span></a>
-                                            <div class="json-formatter-children"></div>
-                                          </div>
-                                          <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
-                                              class="json-formatter-key">format:</span><span
-                                              class="json-formatter-string">"double"</span></a>
-                                            <div class="json-formatter-children"></div>
-                                          </div>
+                          <el-table
+                              :data="operation.parameters"
+                              style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                label="Name"
+                                width="180">
+                            </el-table-column>
+                            <el-table-column
+                                prop="in"
+                                label="Located in"
+                                width="180">
+                            </el-table-column>
+                            <el-table-column
+                                prop="description"
+                                label="Description">
+                            </el-table-column>
+                            <el-table-column
+                                prop="required"
+                                label="Required">
+                            </el-table-column>
+                            <el-table-column
+                                inline-template
+                                label="Schema">
+                              <table class="schema-model">
+                                <tbody>
+                                <tr>
+                                  <td>
+                                    <a class="toggle" @click="$set(row,'_showOperations',!row._showOperations)"
+                                       title="Switch to json">
+                                      ⇄ </a></td>
+                                  <td class="view json ng-hide" v-if="row._showOperations">
+                                    <div class="json-formatter-row json-formatter-open"><a
+                                        class="json-formatter-toggler-link"><span
+                                        class="json-formatter-toggler"></span><span
+                                        class="json-formatter-value"><span><span
+                                        class="json-formatter-constructor-name">Object</span></span></span></a>
+                                      <div class="json-formatter-children json-formatter-object">
+                                        <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
+                                            class="json-formatter-key">type:</span><span
+                                            class="json-formatter-string">"number"</span></a>
+                                          <div class="json-formatter-children"></div>
+                                        </div>
+                                        <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
+                                            class="json-formatter-key">format:</span><span
+                                            class="json-formatter-string">"double"</span></a>
+                                          <div class="json-formatter-children"></div>
                                         </div>
                                       </div>
-                                    </td>
-                                    <td class="view schema" v-show="!parameter.mode">
-                                      <div class="json-schema-view">
-                                        <div class="primitive">
-                                          <span class="type">{{parameter.type}}</span>
-                                          <span class="format">({{parameter.forfmat}})</span>
-                                        </div>
+                                    </div>
+                                  </td>
+                                  <td class="view schema" v-if="!row._showOperations">
+                                    <div class="json-schema-view">
+                                      <div class="primitive">
+                                        <span class="type">{{row.type}}</span>
+                                        <span class="format">({{row.format}})</span>
                                       </div>
-                                    </td>
-                                  </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                            </tbody>
-                          </table>
+                                    </div>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </el-table-column>
+                          </el-table>
                         </div>
                       </section>
-                      <section class="responses"><h4>Responses</h4>
+                      <section class="responses">
+                        <h4>Responses</h4>
                         <div>
-                          <table class="respns">
-                            <thead>
-                            <tr>
-                              <th>Code</th>
-                              <th>Description</th>
-                              <th>Schema</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(response,responseCode) in operation.responses">
-                              <td><a tooltip-trigger="mouseenter">
-                                <span class="resp-code green"> {{responseCode}} </span> </a></td>
-                              <td marked="response.description"><p>{{response.description}}</p>
-                              </td>
-                              <td>
-                                <table class="schema-model">
-                                  <tbody>
-                                  <tr>
-                                    <td><a class="toggle" @click="response.mode=!response.mode" title="Switch to json"> ⇄ </a></td>
-                                    <td class="view json ng-hide" v-show="response.mode">
-                                      <div class="json-formatter-row json-formatter-open"><a
-                                          class="json-formatter-toggler-link"><span
-                                          class="json-formatter-toggler"></span><span
-                                          class="json-formatter-value"><span><span
-                                          class="json-formatter-constructor-name">Object</span></span></span></a>
-                                        <div class="json-formatter-children json-formatter-object">
-                                          <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
-                                              class="json-formatter-key">type:</span><span
-                                              class="json-formatter-string">"array"</span></a>
-                                            <div class="json-formatter-children"></div>
-                                          </div>
-                                          <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
-                                              class="json-formatter-toggler"></span><span class="json-formatter-key">items:</span><span
-                                              class="json-formatter-value"><span><span
-                                              class="json-formatter-constructor-name">Object</span></span></span></a>
-                                            <div class="json-formatter-children json-formatter-object"></div>
-                                          </div>
+                          <el-table
+                              :data="getResponse(operation.responses)"
+                              style="width: 100%">
+                            <el-table-column
+                                prop="code"
+                                label="Code"
+                                width="80">
+                            </el-table-column>
+                            <el-table-column
+                                prop="description"
+                                label="Description">
+                            </el-table-column>
+                            <el-table-column
+                                inline-template
+                                label="Schema">
+                              <table class="schema-model">
+                                <tbody>
+                                <tr>
+                                  <td><a class="toggle" @click="$set(row,'mode',!row.mode)"
+                                         title="Switch to json">
+                                    ⇄ </a></td>
+                                  <td class="view json ng-hide" v-if="row.mode">
+                                    <div class="json-formatter-row json-formatter-open"><a
+                                        class="json-formatter-toggler-link"><span
+                                        class="json-formatter-toggler"></span><span
+                                        class="json-formatter-value"><span><span
+                                        class="json-formatter-constructor-name">{{$index}}</span></span></span></a>
+                                      <div class="json-formatter-children json-formatter-object">
+                                        <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
+                                            class="json-formatter-key">type:</span><span
+                                            class="json-formatter-string">"array"</span></a>
+                                          <div class="json-formatter-children"></div>
+                                        </div>
+                                        <div class="json-formatter-row"><a class="json-formatter-toggler-link"><span
+                                            class="json-formatter-toggler"></span><span class="json-formatter-key">items:</span><span
+                                            class="json-formatter-value"><span><span
+                                            class="json-formatter-constructor-name">Object</span></span></span></a>
+                                          <div class="json-formatter-children json-formatter-object"></div>
                                         </div>
                                       </div>
-                                    </td>
-                                    <td class="view schema" v-show="!response">
-                                      <div class="json-schema-view">
-                                        <div class="array">
-                                          <a class="title"><span class="toggle-handle"></span><span
-                                              class="opening bracket">[</span></a>
-                                          <div class="inner">
-                                            <div class="json-schema-view collapsed">
-                                              <div class="object">
-                                                <a class="title"><span class="toggle-handle"></span>Product <span
-                                                    class="opening brace">{</span>
-                                                  <span class="closing brace" v-if="isCollapsed">}</span>
-                                                </a>
-                                                <div class="inner">
+                                    </div>
+                                  </td>
+                                  <td class="view schema" v-show="!row.mode">
+                                    <div class="json-schema-view">
+                                      <div class="array">
+                                        <a class="title"><span class="toggle-handle"></span><span
+                                            class="opening bracket">[</span></a>
+                                        <div class="inner">
+                                          <div class="json-schema-view collapsed">
+                                            <div class="object">
+                                              <a class="title"><span class="toggle-handle"></span>Product <span
+                                                  class="opening brace">{</span>
+                                                <span class="closing brace" v-if="isCollapsed">}</span>
+                                              </a>
+                                              <div class="inner">
 
-                                                </div>
                                               </div>
                                             </div>
                                           </div>
-                                          <span class="closing bracket">]</span>
                                         </div>
+                                        <span class="closing bracket">]</span>
                                       </div>
-                                    </td>
-                                  </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                            </tbody>
-                          </table>
+                                    </div>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </el-table-column>
+                          </el-table>
                         </div>
                       </section>
-                     <!-- <section class="try-operation" v-if="enableTryIt">
-                        <button class="border-only try-it" ng-class="{trying: isTryOpen}" ng-click="toggleTry()"
-                                v-if="!isTryOpen" track-event="try-operation"> Try this operation
+                      <section class="try-operation">
+                        <button class="border-only try-it"> Try this operation
                         </button>
-                      </section>-->
+                      </section>
                     </div>
                   </li>
                 </ul>
@@ -305,6 +306,18 @@ Members</span> </a></li>
     },
     mounted: function () {
 
+    },
+    methods: {
+      getResponse: function (data) {
+        var array = []
+        if (data) {
+          for (let key in data) {
+            data[ key ].code = key
+            array.push(data[ key ])
+          }
+        }
+        return array
+      }
     }
   }
 </script>
