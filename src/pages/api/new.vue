@@ -5,8 +5,9 @@
         <div class="controls">
           <el-button-group>
             <el-button type="primary">历史版本</el-button>
-            <el-button type="primary">保存</el-button>
+            <el-button type="primary">版本对比</el-button>
             <el-button type="primary">mock</el-button>
+            <el-button type="primary">保存</el-button>
             <el-button type="primary">删除</el-button>
           </el-button-group>
         </div>
