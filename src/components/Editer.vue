@@ -12,7 +12,10 @@
             <div class="operation">
               <header>
                 <a class="focus-editor" tooltip-trigger="mouseenter"> </a>
-                <div class="http-method"> <div :class="[apiInfo.type]" class="method">{{apiInfo.type}} </div>{{apiInfo.path}}</div>
+                <div class="http-method">
+                  <div :class="[apiInfo.type]" class="method">{{apiInfo.type}}</div>
+                  {{apiInfo.path}}
+                </div>
               </header>
               <div class="content">
                 <section class="description" v-if="apiInfo.description"><h4>描述</h4>
@@ -51,12 +54,13 @@
                     </el-table>
                   </div>
                 </section>
-                 <section class="responses">
-                   <h4>Responses</h4>
-                   <div class="responseContent">
-                     <code-viewer :contents="JSON.stringify(apiInfo.responses)" :ctype="'json'"></code-viewer>
-                   </div>
-                 </section>
+                <section class="responses">
+                  <h4>Responses</h4>
+                  <div class="responseContent">
+                    <code-viewer :contents="JSON.stringify(apiInfo.responses)" :options="jsonViewOption"
+                                 :ctype="'json'"></code-viewer>
+                  </div>
+                </section>
               </div>
             </div>
           </div>
@@ -117,7 +121,6 @@
                 height 400px
 
 
-
 </style>
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
@@ -157,6 +160,10 @@ definitions:
 `,
         apiInfo: {
           type: ''
+        },
+        jsonViewOption: {
+          'theme': '',
+          'showLineNumbers': false
         }
       }
     },

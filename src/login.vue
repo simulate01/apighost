@@ -1,138 +1,117 @@
 <template>
-  <div class="login">
-    <div class="header">
-      <img src="./assets/image/login.png"/>
+  <div class="ui_charcoal login-page application navless">
+
+    <header class="navbar navbar-fixed-top navbar-empty">
+      <div class="container">
+        <div class="center-logo">
+
+        </div>
+      </div>
+    </header>
+
+
+    <div class="container navless-container">
+      <div class="content">
+        <div class="row">
+          <div class="col-sm-5 pull-right">
+            <div>
+              <div class="login-box">
+                <div class="login-heading">
+                  <h3>已经有用户? 登陆</h3>
+                </div>
+                <div class="login-body">
+                  <div class="new_user" id="new_user" >
+
+                    <input
+                        class="form-control top" placeholder="账户或邮箱" autofocus="autofocus"
+                        autocapitalize="off"
+                        autocorrect="off" type="text" name="user[login]" id="user_login">
+                    <input class="form-control bottom" placeholder="密码" type="password" name="user[password]"
+                           id="user_password"
+                    >
+                    <div class="remember-me checkbox">
+                      <label for="user_remember_me">
+                        <input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me">
+                        <span>记住登陆</span>
+                      </label>
+                      <div class="pull-right">
+                        <a href="#/user_newpassword">忘记密码?</a>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="submit" name="commit" value="登陆" class="btn btn-save">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="prepend-top-20">
+                <div class="login-box">
+                  <div class="login-heading">
+                    <h3>没有用户? 创建新用户</h3>
+                  </div>
+                  <div class="login-body">
+                    <div class="new_new_user">
+                      <div class="devise-errors">
+                      </div>
+                      <div>
+                        <input class="form-control top" placeholder="姓名" required="required" type="text"
+                               name="new_user[name]" id="new_user_name">
+                      </div>
+                      <div>
+                        <input class="form-control middle" placeholder="账户" required="required" type="text"
+                               name="new_user[username]" id="new_user_username">
+                      </div>
+                      <div>
+                        <input class="form-control middle" placeholder="邮箱" required="required" type="email" value=""
+                               name="new_user[email]" id="new_user_email">
+                      </div>
+                      <div class="form-group append-bottom-20" id="password-strength">
+                        <input class="form-control bottom" placeholder="不少于8位的密码"
+                               type="password" name="new_user[password]" id="new_user_password">
+                      </div>
+                      <div>
+                        <input type="submit" name="commit" value="注册" class="btn-create btn">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-sm-7 brand-holder pull-left">
+            <h1>
+              Go InterFace
+            </h1>
+            <h3>接口定义神器</h3>
+            <p>
+              高效开发
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-    <h2>{{packageInfo.description}}</h2>
-    <div>
-      <div class="form-group">
-        <input type="text" v-model="loginName" class="form-control" placeholder="登陆账号"/>
-      </div>
-      <div class="form-group">
-        <input type="password" v-model="password" class="form-control" placeholder="密码"/>
-      </div>
-      <div class="btnWarp">
-        <button type="button" @click="submit" class="btn btn-primary">登陆</button>
-        <button type="button" @click="register" class="btn btn-warn">注册</button>
+    <hr>
+    <div class="container">
+      <div class="footer-links">
+        <a href="/explore">Explore</a>
+        <a href="/help">Help</a>
+        <a href="https://about.gitlab.com/">About GitLab</a>
       </div>
     </div>
-    <p>
-      <small>
-        <b>Copyright</b>
-        {{packageInfo.Copyright}}
-      </small>
-    </p>
+
+
+    <div class="device-xs visible-xs"></div>
+    <div class="device-sm visible-sm"></div>
+    <div class="device-md visible-md"></div>
+    <div class="device-lg visible-lg"></div>
+
   </div>
 </template>
 
 <style lang="less" rel="stylesheet/less" scoped type="text/css">
-  .login {
-    color: #909496;
-    margin-left: -150px;
-    margin-top: -230px;
-    width: 300px;
-    height: 400px;
-    text-align: center;
-    position: absolute;
-    top: 46%;
-    left: 50%;
-    z-index: 100;
-    opacity: 0;
-    animation: myfirst 1s;
-    -webkit-animation: myfirst 1s; /* Safari and Chrome */
-    animation-fill-mode: forwards;
-    -webkit-animation-fill-mode: forwards;
-    animation-timing-function: linear;
-    @keyframes myfirst {
-      0% {
-        opacity: 0;
-        -webkit-transform: translateY(-20px);
-        -ms-transform: translateY(-20px);
-        transform: translateY(-20px);
-      }
-
-      100% {
-        opacity: 1;
-        -webkit-transform: translateY(0);
-        -ms-transform: translateY(0);
-        transform: translateY(0);
-      }
-    }
-    h2 {
-      margin-bottom: 20px;
-      font-size: 24px;
-      font-weight: 100;
-    }
-    .header {
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-control {
-      height: 34px;
-      outline: none;
-      box-sizing: border-box;
-      background-color: #FFFFFF;
-      background-image: none;
-      border: 1px solid #e5e6e7;
-      border-radius: 1px;
-      color: inherit;
-      display: block;
-      padding: 6px 12px;
-      transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-      width: 100%;
-      font-size: 14px;
-    }
-    .form-control:focus {
-      border-color: #1ab394;
-    }
-    .btn-primary {
-      background-color: #1ab394;
-      border-color: #1ab394;
-      color: #FFFFFF;
-    }
-    .btn-warn {
-      background-color: #ffaa10;
-      border-color: #ffaa10;
-      color: #FFFFFF;
-    }
-    .btnWarp{
-      display: flex;
-    }
-    .btn {
-      width: 100% !important;
-      border-radius: 3px;
-      display: inline-block;
-      padding: 6px 12px;
-      margin-bottom: 0;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42857143;
-      text-align: center;
-      white-space: nowrap;
-      vertical-align: middle;
-      touch-action: manipulation;
-      cursor: pointer;
-      user-select: none;
-      background-image: none;
-      border: 1px solid transparent;
-      border-radius: 4px;
-      display: inline-block;
-      flex: 1;
-      margin: 10px;
-    }
-    p {
-      margin-top: 20px;
-      b {
-        color: #6d6767;
-      }
-      small {
-        font-size: 12px;
-      }
-    }
-
-  }
 </style>
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
