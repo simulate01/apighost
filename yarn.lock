@@ -1243,9 +1243,9 @@ vue@^2.1.8:
   version "2.1.8"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.1.8.tgz#ae30aa86024fccf5535292ce414e7b4c221a1756"
 
-vuex@^2.0.0:
-  version "2.0.0"
-  resolved "http://192.168.199.131:4873/vuex/-/vuex-2.0.0.tgz#26befa44de220f009e432d1027487bff29571cee"
+vuex@^2.1.1:
+  version "2.1.1"
+  resolved "http://registry.npm.taobao.org/vuex/download/vuex-2.1.1.tgz#78463ee45fae4871c5d05177b4e8cedd9e2cbccc"
 
 when@~3.6.x:
   version "3.6.4"

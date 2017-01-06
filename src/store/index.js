@@ -21,7 +21,7 @@ var theme = {
 }
 var localTheme = window.localStorage.getItem('theme')
 if (localTheme) {
-  theme = JSON.parse(localTheme)
+  Object.assign(theme, JSON.parse(localTheme))
 }
 const state = {
   app: {

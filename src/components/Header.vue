@@ -5,57 +5,22 @@
       <div class="header-content">
         <button @click.stop="toggle" aria-label="Toggle global navigation" class="side-nav-toggle" type="button">
           <span class="sr-only">Toggle navigation</span>
-          <i class="fa fa-bars"></i>
-        </button>
-        <button class="navbar-toggle" type="button">
-          <span class="sr-only">Toggle navigation</span>
-          <i class="fa fa-ellipsis-v"></i>
+          <i class="iconfont icon-menu"></i>
         </button>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="hidden-sm hidden-xs">
               <div class="search search-form">
-                <form class="navbar-form" action="/search" accept-charset="UTF-8" method="get"><input name="utf8"
-                                                                                                      type="hidden"
-                                                                                                      value="✓">
-                  <div class="search-input-container">
-                    <div class="search-input-wrap">
-                      <div class="dropdown" data-url="/search/autocomplete">
-                        <input type="search" name="search" id="search" placeholder="Search"
-                               class="search-input dropdown-menu-toggle disabled" spellcheck="false" tabindex="1"
-                               autocomplete="off" data-toggle="dropdown" value="">
-                        <div class="dropdown-menu dropdown-select">
-                          <div class="dropdown-content">
-                            <ul>
-                              <li>
-                                <a class="is-focused dropdown-menu-empty-link">
-                                  Loading...
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="dropdown-loading"><i class="fa fa-spinner fa-spin"></i></div>
-                        </div>
-                        <i class="search-icon"></i>
-                        <i class="clear-icon js-clear-input"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="hidden" name="group_id" id="group_id">
-                  <input type="hidden" name="project_id" id="search_project_id" value="">
-                  <input type="hidden" name="repository_ref" id="repository_ref">
-                  <div class="search-autocomplete-opts hide" data-autocomplete-path="/search/autocomplete"></div>
-                </form>
+                <el-input
+                    placeholder="搜索"
+                    icon="search"
+                    v-model="input2"
+                    @click="handleIconClick"></el-input>
               </div>
-
             </li>
-            <li class="visible-sm visible-xs">
-              <a title="Search" aria-label="Search" data-toggle="tooltip" data-placement="bottom" data-container="body"
-                 href="/search"><i class="fa fa-search"></i>
-              </a></li>
             <li>
               <a title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
-                 data-container="body" href="#/projects_new"><i class="fa fa-plus fa-fw"></i>
+                 data-container="body" href="#/projects_new"><i class="el-icon-plus"></i>
               </a></li>
             <li class="header-user dropdown">
               <el-popover
@@ -100,6 +65,10 @@
     display block
     position relative
     border none
+  .search
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 7.5px;
 </style>
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
@@ -128,6 +97,9 @@
         this.$store.dispatch('updataTheme', {
           isToggle: istoggle
         })
+      },
+      handleIconClick: function () {
+
       },
       /**
        * 登出

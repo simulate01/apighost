@@ -54,7 +54,6 @@
 
 <script type="text/ecmascript-6">
   import BasePage from 'src/extend/BasePage'
-  import Server from 'src/extend/Server'
   export default{
     mixins: [ BasePage ],
     components: {},

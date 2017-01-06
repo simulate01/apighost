@@ -119,7 +119,7 @@ Members</span> </a></li>
                       <a class="focus-editor" tooltip-trigger="mouseenter"> </a>
                       <div class="http-method">{{operationName}} {{pathName}}</div>
                       <router-link class="edit" :to="{path:'/api_new',query:{edit:true}}">
-                        <i class="fa fa-edit"></i>
+                        <i class="el-icon-edit"></i>
                       </router-link>
                     </header>
                     <div class="content" v-if="operation._showOperations">
