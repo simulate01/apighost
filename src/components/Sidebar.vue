@@ -1,16 +1,20 @@
 <template>
   <div class="nicescroll sidebar-expanded sidebar-wrapper">
     <div class="sidebar-action-buttons">
-      <a @click.prevent="toggle" class="nav-header-btn toggle-nav-collapse" title="Open/Close"><span
-          class="sr-only">Toggle navigation</span>
-        <i class="fa fa-bars"></i>
-      </a><a @click.prevent="setting" class="nav-header-btn pin-nav-btn has-tooltip js-nav-pin"
-             :class="[{'is-active':theme.isSetting}]"
-             title="Unpin navigation"
-             data-placement="right" data-container="body"><span
-        class="sr-only">Toggle navigation pinning</span>
-      <i class="fa fa-fw fa-thumb-tack"></i>
-    </a></div>
+      <a @click.prevent="toggle" class="nav-header-btn toggle-nav-collapse">
+        <el-tooltip content="Toggle navigation">
+          <i class="iconfont icon-menu"></i>
+        </el-tooltip>
+      </a>
+      <a @click.prevent="setting" class="nav-header-btn pin-nav-btn has-tooltip js-nav-pin"
+         :class="[{'is-active':theme.isSetting}]"
+         title="Unpin navigation"
+         data-placement="right" data-container="body">
+        <el-tooltip content="固定">
+          <i class="iconfont icon-guding fa-thumb-tack"></i>
+        </el-tooltip>
+      </a>
+    </div>
     <ul class="nav nav-sidebar" tabindex="0" style="overflow: hidden; outline: none;">
       <li class="home"><a title="Projects" class="dashboard-shortcuts-projects" href="#/dashboard_projects"><span>
 项目
