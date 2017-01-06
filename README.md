@@ -44,3 +44,8 @@ npm run deploy_prod
 
 
 ## 项目备注
+
+## 参考资料
+[简书](http://www.ruanyifeng.com/blog/2016/07/yaml.html?f=tt)
+
+

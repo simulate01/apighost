@@ -78,17 +78,12 @@
           <ul v-if="activeName==='me'" class="projects-list content-list">
             <li v-for="item in tableInfo.data" class="project-row">
               <div class="controls">
-                <span><i class="fa fa-star"></i>0</span>
+                <span><i class="el-icon-star-on"></i>0</span>
 
-                <span v-if="item.visibilitylevel===0" class="visibility-icon has-tooltip" data-container="body"
+                <span class="visibility-icon has-tooltip" data-container="body"
                       data-placement="left" title=""
                       data-original-title="Private - Project access must be granted explicitly to each user.">
-                 <i class="fa fa-lock fa-fw"></i>
-                </span>
-                <span v-if="item.visibilitylevel===1" class="visibility-icon has-tooltip" data-container="body"
-                      data-placement="left"
-                      title="Public - The project can be cloned without any authentication.">
-                    <i class="fa fa-globe fa-fw"></i>
+                 <i class="el-icon-information"></i>
                 </span>
 
               </div>
