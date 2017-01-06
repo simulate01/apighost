@@ -175,7 +175,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "http://192.168.199.131:4873/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-commander@^2.9.0:
+commander@*, commander@^2.9.0:
   version "2.9.0"
   resolved "http://192.168.199.131:4873/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -839,6 +839,12 @@ mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
   resolved "http://192.168.199.131:4873/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+mockjs@^1.0.1-beta3:
+  version "1.0.1-beta3"
+  resolved "http://192.168.199.131:4873/mockjs/-/mockjs-1.0.1-beta3.tgz#d234f3c27256397564f2c955142e891909537209"
+  dependencies:
+    commander "*"
 
 ms@0.7.2:
   version "0.7.2"
