@@ -4,7 +4,7 @@
     <header class="navbar navbar-fixed-top navbar-empty">
       <div class="container">
         <div class="center-logo">
-
+          <img src="./assets/image/logo.png" alt="logo">
         </div>
       </div>
     </header>
@@ -15,68 +15,62 @@
         <div class="row">
           <div class="col-sm-5 pull-right">
             <div>
-              <div class="login-box">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="登 陆" name="first"></el-tab-pane>
+                <el-tab-pane label="注 册" name="second"></el-tab-pane>
+              </el-tabs>
+              <div v-if="activeName==='first'" class="login-box">
                 <div class="login-heading">
                   <h3>已经有用户? 登陆</h3>
                 </div>
                 <div class="login-body">
-                  <div class="new_user" id="new_user" >
+                  <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="80px">
+                    <el-form-item label="账 户" prop="account">
+                      <el-input placeholder="账户" v-model="loginForm.account">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="密 码" prop="password">
+                      <el-input placeholder="密 码" v-model="loginForm.password">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="记住密码">
+                      <el-switch on-text="" off-text="" v-model="loginForm.remember"></el-switch>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="submitForm">登 陆</el-button>
+                    </el-form-item>
 
-                    <input
-                        class="form-control top" placeholder="账户或邮箱" autofocus="autofocus"
-                        autocapitalize="off"
-                        autocorrect="off" type="text" name="user[login]" id="user_login">
-                    <input class="form-control bottom" placeholder="密码" type="password" name="user[password]"
-                           id="user_password"
-                    >
-                    <div class="remember-me checkbox">
-                      <label for="user_remember_me">
-                        <input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me">
-                        <span>记住登陆</span>
-                      </label>
-                      <div class="pull-right">
-                        <a href="#/user_newpassword">忘记密码?</a>
-                      </div>
-                    </div>
-                    <div>
-                      <input type="submit" name="commit" value="登陆" class="btn btn-save">
-                    </div>
-                  </div>
+                  </el-form>
                 </div>
               </div>
-
-              <div class="prepend-top-20">
-                <div class="login-box">
-                  <div class="login-heading">
-                    <h3>没有用户? 创建新用户</h3>
-                  </div>
-                  <div class="login-body">
-                    <div class="new_new_user">
-                      <div class="devise-errors">
-                      </div>
-                      <div>
-                        <input class="form-control top" placeholder="姓名" required="required" type="text"
-                               name="new_user[name]" id="new_user_name">
-                      </div>
-                      <div>
-                        <input class="form-control middle" placeholder="账户" required="required" type="text"
-                               name="new_user[username]" id="new_user_username">
-                      </div>
-                      <div>
-                        <input class="form-control middle" placeholder="邮箱" required="required" type="email" value=""
-                               name="new_user[email]" id="new_user_email">
-                      </div>
-                      <div class="form-group append-bottom-20" id="password-strength">
-                        <input class="form-control bottom" placeholder="不少于8位的密码"
-                               type="password" name="new_user[password]" id="new_user_password">
-                      </div>
-                      <div>
-                        <input type="submit" name="commit" value="注册" class="btn-create btn">
-                      </div>
-                    </div>
-                  </div>
+              <div v-if="activeName==='second'" class="login-box">
+                <div class="login-heading">
+                  <h3>没有用户? 创建新用户</h3>
                 </div>
+                <div class="login-body">
+                  <el-form ref="registerForm" :model="registerForm" :rules="registerRules" label-width="80px">
+                    <el-form-item label="账 户" prop="account">
+                      <el-input placeholder="账户" v-model="registerForm.account">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="姓 名" prop="password">
+                      <el-input placeholder="姓 名" v-model="registerForm.name">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="邮 箱" prop="email">
+                      <el-input placeholder="邮 箱" v-model="registerForm.email">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="密 码" prop="password">
+                      <el-input placeholder="密 码" v-model="registerForm.password">
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button type="primary" @click="submitForm">注 册</el-button>
+                    </el-form-item>
 
+                  </el-form>
+                </div>
               </div>
             </div>
 
@@ -110,8 +104,15 @@
 
   </div>
 </template>
-
-<style lang="less" rel="stylesheet/less" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
+  .center-logo
+    img
+      width 40px
+      height 40px
+  .login-box
+    padding 20px 20px
+    border 1px solid #ddd
+    border-radius 5px
 </style>
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
@@ -121,10 +122,41 @@
   export default {
     data: function () {
       return {
-        loginName: '12345678905',
-        password: '123456',
-        cachePassword: false,
-        autoLogin: true
+        loginRules: {
+          account: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入账户名称', trigger: 'blur' },
+            { min: 3, max: 15, message: '3-15位大小写字母和._-组成的名称', trigger: 'blur' }
+          ]
+        },
+        registerRules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          account: [
+            { required: true, message: '请输入账户名称', trigger: 'blur' },
+            { min: 3, max: 15, message: '3-15位大小写字母和._-组成的名称', trigger: 'blur' }
+          ],
+          email: [
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+          ]
+        },
+        loginForm: {
+          account: '',
+          password: '',
+          remember: true
+        },
+        registerForm: {
+          email: '',
+          account: '',
+          password: ''
+        },
+        activeName: 'first'
       }
     },
     computed: mapState({
@@ -177,6 +209,9 @@
       },
       editPassword: function () {
       },
+      handleClick: function (index) {
+        this.activeName = index.name
+      },
       loginSuccess: function (data) {
         // 重定向到退出登陆的页面地址
         // 记录登陆信息。可以是cookie 也可以是 session
@@ -189,6 +224,19 @@
         } else {
           window.location.replace('index.html')
         }
+      },
+      submitForm () {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            window.alert('submit!')
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      resetForm () {
+        this.$refs.form.resetFields()
       }
     }
   }

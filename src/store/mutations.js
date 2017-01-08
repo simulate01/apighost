@@ -27,6 +27,6 @@ export const changeNavTwoIndex = (state, data) => {
 }
 
 export const updataTheme = (state, data) => {
-  window.localStorage.setItem('theme', JSON.stringify(data))
   Object.assign(state.app.theme, data)
+  window.localStorage.setItem('theme', JSON.stringify(state.app.theme))
 }

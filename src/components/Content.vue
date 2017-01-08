@@ -1,8 +1,8 @@
 <template>
   <div class="page-with-sidebar"
-       :class="[{'page-sidebar-collapsed':theme.isToggle,'page-sidebar-expanded':!theme.isToggle,'page-sidebar-pinned':theme.isSetting}]">
+       :class="[{'page-sidebar-collapsed':theme.isOpen,'page-sidebar-expanded':!theme.isOpen,'page-sidebar-pinned':theme.isLock}]">
     <c-sidebar></c-sidebar>
-    <div @click="toggle">
+    <div @click="closePanel">
       <router-view></router-view>
     </div>
   </div>
@@ -31,10 +31,13 @@
       this.minHeight = window.document.body.offsetHeight - 50 - 45
     },
     methods: {
-      toggle: function () {
-        this.$store.dispatch('updataTheme', {
-          isToggle: true
-        })
+      closePanel: function () {
+        if (!this.theme.isOpen&&!this.theme.isLock) {
+          this.$store.dispatch('updataTheme', {
+            isOpen: true,
+            isLock: false
+          })
+        }
       },
       changeTheme: function (color) {
         this.$store.dispatch('updataTheme', {

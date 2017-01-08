@@ -49,6 +49,7 @@
       editor = ace.edit('codeviewer')
       editor.setOptions(this.options)
       editor.getSession().setMode('ace/mode/' + this.ctype)
+      editor.$blockScrolling = Infinity
       console.log('this.contents', this.contents)
       this.changeContent()
       editor.resize()

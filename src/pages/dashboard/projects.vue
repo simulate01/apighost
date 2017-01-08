@@ -10,68 +10,17 @@
             <el-tab-pane label="关注项目" name="star"></el-tab-pane>
           </el-tabs>
           <div class="nav-controls">
-            <form class="project-filter-form" id="project-filter-form" action="/dashboard/projects"
-                  accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓"><input type="search"
-                                                                                                        name="filter_projects"
-                                                                                                        id="project-filter-form-field"
-                                                                                                        placeholder="Filter by name..."
-                                                                                                        class="project-filter-form-field form-control input-short projects-list-filter"
-                                                                                                        spellcheck="false"
-                                                                                                        tabindex="2"
-                                                                                                        value="">
-            </form>
+
             <div class="dropdown inline">
-              <button class="dropdown-menu-toggle " id="sort-projects-dropdown" type="button" data-toggle="dropdown">
-                <span class="dropdown-toggle-text">Last updated</span><i class="fa fa-chevron-down"></i></button>
-              <ul class="dropdown-menu dropdown-menu-align-right dropdown-menu-selectable">
-                <li class="dropdown-header">
-                  Sort by
-                </li>
-                <li>
-                  <a href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=name_asc&amp;tag=&amp;visibility_level=">Name
-                  </a></li>
-                <li>
-                  <a class="is-active"
-                     href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=updated_desc&amp;tag=&amp;visibility_level=">Last
-                    updated
-                  </a></li>
-                <li>
-                  <a href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=updated_asc&amp;tag=&amp;visibility_level=">Oldest
-                    updated
-                  </a></li>
-                <li>
-                  <a href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=created_desc&amp;tag=&amp;visibility_level=">Last
-                    created
-                  </a></li>
-                <li>
-                  <a href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=created_asc&amp;tag=&amp;visibility_level=">Oldest
-                    created
-                  </a></li>
-                <li class="divider"></li>
-                <li>
-                  <a class="is-active"
-                     href="/dashboard/projects?archived=&amp;group=&amp;namespace_id=&amp;scope=&amp;sort=updated_desc&amp;tag=&amp;visibility_level=">Hide
-                    archived projects
-                  </a></li>
-                <li>
-                  <a href="/dashboard/projects?archived=true&amp;group=&amp;namespace_id=&amp;scope=&amp;sort=updated_desc&amp;tag=&amp;visibility_level=">Show
-                    archived projects
-                  </a></li>
-                <li class="divider"></li>
-                <li>
-                  <a class="is-active"
-                     href="/dashboard/projects?group=&amp;namespace_id=&amp;personal=&amp;scope=&amp;sort=updated_desc&amp;tag=&amp;visibility_level=">Owned
-                    by anyone
-                  </a></li>
-                <li>
-                  <a href="/dashboard/projects?group=&amp;namespace_id=&amp;personal=true&amp;scope=&amp;sort=updated_desc&amp;tag=&amp;visibility_level=">Owned
-                    by me
-                  </a></li>
-              </ul>
+              <el-input
+                  size="large"
+                  placeholder="搜索"
+                  v-model="input6">
+              </el-input>
             </div>
 
-            <a class="btn btn-new" href="#/projects_new">New Project
-            </a></div>
+            <a class="btn btn-new" href="#/projects_new">创建项目</a>
+          </div>
         </div>
 
         <div class="projects-list-holder">
@@ -148,7 +97,7 @@
     },
     methods: {
       tabHandleClick (tab) {
-        this.activeName = tab.index
+        this.activeName = tab.name
       },
       loadData (pageId) {
         this.tableInfo.pagination.curr = pageId
