@@ -4,7 +4,9 @@
       <div class="econ" id="editor">
       </div>
       <div class="error-hint">
-        <p v-for="error in errorList" @click="jump2error(error.mark)">{{error.message}}></p>
+        <template v-for="error in errorList">
+          <el-alert :show-icon='true' :title="error.message" type="error" @click.native="jump2error(error.mark)"></el-alert>
+        </template>
       </div>
     </div>
     <div class="preview">
@@ -35,12 +37,14 @@
   import ace from 'ace'
   import jsYaml from 'js-yaml'
   import editorSetting from 'src/assets/data/editorSetting.json'
+  var Range = ace.require('ace/range').Range
+  var lodash = require('lodash')
   var Mock = require('mockjs')
   window.Mock = Mock
   window.jsYaml = jsYaml
+  window.lodash = lodash
   var editor = null
   var session = null
-  var doc = null
 
   export default {
     mixins: [ BaseComponent ],
@@ -50,17 +54,9 @@
       return {
         content: '',
         jsonContent: '',
-        errorList: []
-      }
-    },
-    mounted () {
-      editor = ace.edit('editor')
-      session = editor.getSession()
-      doc = session.getDocument()
-      doc
-      editor.setOptions(editorSetting)
-      editor.resize()
-      editor.setValue(`path: /name
+        errorList: [],
+        origindata: `
+path: /name
 type: get
 description: 获取用户姓名
 definitions:
@@ -82,10 +78,46 @@ responses:
   500:
     code: int
     error: string
-`)
+`
+      }
+    },
+    mounted () {
+      editor = ace.edit('editor')
+      var langTools = ace.require('ace/ext/language_tools')
+      var mockCompleter = {
+        getCompletions: function (editor, session, pos, prefix, callback) {
+          var wordList = ['@cword', '@url', '@email']
+          var row = pos.row
+          var col = pos.column - prefix.length
+          var at = session.getTextRange(new Range(row, col - 1, row, col))
+          console.log('prefix', prefix, pos)
+          if (prefix.length !== 0) {
+            wordList = wordList.filter(meta => {
+              var reg = new RegExp(prefix.split('').join('\\w*'))
+              console.log('reg:', reg)
+              return reg.test(meta)
+            })
+          }
+          callback(null, wordList.map(function (word, index) {
+            return {name: word, value: at === '@' ? word.replace(/^[@]/, '') : word, score: 100, meta: 'mock'}
+          }))
+        }
+      }
+      langTools.addCompleter(mockCompleter)
+      editor.setOptions(editorSetting)
+      editor.resize()
+      editor.setValue(this.pipe(this.origindata, this.Yaml2MockedYaml))
+      session = editor.getSession()
+      window.session = session
+      window.editor = editor
+      window.page = this
+
       this.editorChange()
-      session.on('change', e => {
-        this.editorChange(e)
+      session.on('change', lodash.debounce(e => this.editorChange(e), 300))
+      editor.commands.on('afterExec', function (e) {
+        if (e.command.name == 'insertstring' && /^[@\w|]$/.test(e.args)) {
+          editor.execCommand('startAutocomplete')
+        }
       })
     },
     methods: {
@@ -106,6 +138,13 @@ responses:
         }
         return val
       },
+      collapseLinesWithStartKey (key) {
+        if (!key) return null
+        var patern = new RegExp(key)
+        var ops = { regExp: true }
+        editor.find(patern, ops)
+        session.toggleFoldWidget()
+      },
       markerError (e) {
         this.errorList.push(e)
       },
@@ -117,13 +156,14 @@ responses:
       editorChange: function () {
         this.content = editor.getValue()
         try {
-          this.jsonContent = this.pipe(this.content, this.Yaml2MockedYaml, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
+          this.jsonContent = this.pipe(this.content, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
         } catch (e) {
           console.log(e)
         }
       },
       trimDef (input) {
-        var defArr = ['definitions', 'path', 'description', 'parameters', 'type']
+//        var defArr = ['definitions', 'path', 'description', 'parameters', 'type']
+        var defArr = ['definitions']
         for (let def of defArr) {
           delete input[def]
         }
@@ -154,9 +194,11 @@ responses:
           console.log('p2:', p2)
           return p2 ? `|${count}: ${val} # ${p2}\n` : `|${count}: ${val}\n`
         }
+        console.log('fff', input.replace(reg, replacer))
         return input.replace(reg, replacer)
       },
       mock2Data (input) {
+//        var input = input.replace('@')
         return Mock.mock(input)
       }
     }
