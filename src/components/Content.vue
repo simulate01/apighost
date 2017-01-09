@@ -32,7 +32,7 @@
     },
     methods: {
       closePanel: function () {
-        if (!this.theme.isOpen&&!this.theme.isLock) {
+        if (!this.theme.isOpen && !this.theme.isLock) {
           this.$store.dispatch('updataTheme', {
             isOpen: true,
             isLock: false
