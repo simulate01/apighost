@@ -1,12 +1,15 @@
 <template>
   <div class="content">
+    <div class="mock-helper">
+      <div class="mock-word" v-for="word in mockList">
+        <el-button size="small" @click.native="insert(word)">{{word}}</el-button>
+      </div>
+    </div>
     <div class="editor">
       <div class="econ" id="editor">
       </div>
       <div class="error-hint">
-        <template v-for="error in errorList">
-          <el-alert :show-icon='true' :title="error.message" type="error" @click.native="jump2error(error.mark)"></el-alert>
-        </template>
+        <p @click="jump2error(error.mark)" v-for="error in errorList">{{error.message}}</p>
       </div>
     </div>
     <div class="preview">
@@ -19,14 +22,60 @@
     display flex
     height 100%
     width 100%
+    .mock-helper {
+      width 100px
+      overflow-y auto
+      background-color: #002B36;
+      /*------------滚动条样式修改------------*/
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        height: 6px;
+      }
+      &::-webkit-scrollbar-track-piece
+      {
+        background-color: rgba(0, 0, 0, 0);
+        -webkit-border-radius: 6px;
+      }
+      &::-webkit-scrollbar-thumb:vertical
+      {
+        height: 5px;
+        background-color: rgba(125, 122, 122, 0.56);
+        -webkit-border-radius: 6px;
+      }
+
+      .mock-word {
+        margin-bottom 1px
+      }
+    }
     .editor
       height 100%
       flex 1
+      display -webkit-box
+      -webkit-box-orient vertical
+      .error-hint {
+        background-color: #002B36;
+        p {
+          &::before {
+            display inline-block
+            content '>>'
+            margin-right 40px
+            color #fff
+            text-decoration none
+          }
+          margin 0
+          color red
+          text-decoration underline
+          cursor pointer
+          line-height 2
+        }
+      }
+
       .econ
-        height 100%
+        -webkit-box-flex 1
         width 100%
     .preview
-      padding 20px
+      margin-left 20px;
       height 100%
       flex 1
 
@@ -55,6 +104,7 @@
         content: '',
         jsonContent: '',
         errorList: [],
+        mockList: ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\''],
         origindata: `
 path: /name
 type: get
@@ -65,12 +115,12 @@ definitions:
     description: string|Description of product.
 parameters:
   id: int|用户id
-  name: string|用户姓名
+  name: string # 用户姓名
 responses:
   200:
     pageSize: int
     list:
-      - name: int|描述
+      - name: string #描述
         url: string|描述
         pets:
           - <<: *Pet
@@ -86,20 +136,20 @@ responses:
       var langTools = ace.require('ace/ext/language_tools')
       var mockCompleter = {
         getCompletions: function (editor, session, pos, prefix, callback) {
-          var wordList = ['@cword', '@url', '@email']
+          var wordList = ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'']
           var row = pos.row
           var col = pos.column - prefix.length
           var at = session.getTextRange(new Range(row, col - 1, row, col))
-          console.log('prefix', prefix, pos)
           if (prefix.length !== 0) {
             wordList = wordList.filter(meta => {
               var reg = new RegExp(prefix.split('').join('\\w*'))
-              console.log('reg:', reg)
               return reg.test(meta)
             })
           }
+          var isAt = /^[@|]/.test(at)
           callback(null, wordList.map(function (word, index) {
-            return {name: word, value: at === '@' ? word.replace(/^[@]/, '') : word, score: 100, meta: 'mock'}
+            var isWordStartWithAt = isAt && new RegExp(`^${at}`).test(word)
+            return {name: word, value: isWordStartWithAt ? word.replace(at, '') : word, score: isWordStartWithAt ? 1000 + index : 1000 - index, meta: 'mock'}
           }))
         }
       }
@@ -125,16 +175,7 @@ responses:
         var args = [].slice.call(arguments, 0)
         var val = args[0]
         for (let arg of args) {
-          if (args.indexOf(arg) != 0 && typeof arg === 'function') {
-            try {
-              val = arg(val)
-            } catch (e) {
-              console.error(e)
-              if (e instanceof jsYaml.YAMLException) this.markerError(e)
-              return ''
-            }
-            this.errorList = []
-          }
+          if (args.indexOf(arg) != 0 && typeof arg === 'function') val = arg(val)
         }
         return val
       },
@@ -146,19 +187,30 @@ responses:
         session.toggleFoldWidget()
       },
       markerError (e) {
+        for (let error of this.errorList) {
+          if (error.message == e.message) return
+        }
         this.errorList.push(e)
+      },
+      clearError (e) {
+        this.errorList = []
       },
       jump2error (mark) {
         editor.moveCursorToPosition({row: mark.line, column: mark.column})
         editor.clearSelection()
         editor.scrollToLine(mark.line, true, true)
       },
+      insert (text) {
+        editor.insert(text)
+      },
       editorChange: function () {
         this.content = editor.getValue()
         try {
           this.jsonContent = this.pipe(this.content, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
+          this.clearError()
         } catch (e) {
           console.log(e)
+          if (e instanceof jsYaml.YAMLException) this.markerError(e)
         }
       },
       trimDef (input) {
@@ -170,7 +222,7 @@ responses:
         return input
       },
       Yaml2MockedYaml (input) {
-        var reg = /:\s*(string|int|number|bool|boolean)(?:\s*\|\s*(.+))?[\n\r]/mig
+        var reg = /:\s*(string|int|number|bool|boolean)(?:\s*[|#]\s*(.+))?[\n\r]/mig
         var replacer = (m, p1, p2) => {
           // p1 pattern; p2 comment
           var count
@@ -182,8 +234,8 @@ responses:
               break
             case 'int':
             case 'number':
-              count = '+1'
-              val = '999999'
+              count = '10-100'
+              val = '10'
               break
             case 'bool':
             case 'boolean':
@@ -194,7 +246,6 @@ responses:
           console.log('p2:', p2)
           return p2 ? `|${count}: ${val} # ${p2}\n` : `|${count}: ${val}\n`
         }
-        console.log('fff', input.replace(reg, replacer))
         return input.replace(reg, replacer)
       },
       mock2Data (input) {
