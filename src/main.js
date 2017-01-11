@@ -3,7 +3,7 @@ import ElementUI from 'element-ui'
 import App from './app'
 import Login from './login'
 import VueRouter from 'vue-router'
-import 'element-ui/lib/theme-default/index.css'
+import './assets/style/theme/index.css'
 import EmaProxy from 'ema-proxy'
 import store from './store'
 require('./extend/filter')

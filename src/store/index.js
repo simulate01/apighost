@@ -16,8 +16,8 @@ if (debug) {
 }
 // 初始化主题信息
 var theme = {
-  isToggle: null,
-  isSetting: null
+  isOpen: false,
+  isLock: false
 }
 var localTheme = window.localStorage.getItem('theme')
 if (localTheme) {
