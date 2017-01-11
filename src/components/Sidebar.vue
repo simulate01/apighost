@@ -3,26 +3,33 @@
     <div class="sidebar-action-buttons">
       <a @click.prevent="toggle" class="nav-header-btn toggle-nav-collapse">
         <el-tooltip content="Toggle navigation">
-          <i class="iconfont icon-menu"></i>
+          <i class="ifont icon-menu"></i>
         </el-tooltip>
       </a>
       <a @click.prevent="setting" class="nav-header-btn pin-nav-btn has-tooltip js-nav-pin"
-         :class="[{'is-active':theme.isSetting}]"
+         :class="[{'is-active':theme.isLock}]"
          title="Unpin navigation"
          data-placement="right" data-container="body">
         <el-tooltip content="固定">
-          <i class="iconfont icon-guding fa-thumb-tack"></i>
+          <i class="ifont icon-guding fa-thumb-tack"></i>
         </el-tooltip>
       </a>
     </div>
-    <ul class="nav nav-sidebar" tabindex="0" style="overflow: hidden; outline: none;">
+    <ul class="nav nav-sidebar" tabindex="0" @click="closePanel" style="overflow: hidden; outline: none;">
       <li class="home"><a title="Projects" class="dashboard-shortcuts-projects" href="#/dashboard_projects"><span>
 项目
 </span>
-      </a></li>
+      </a>
+      </li>
 
       <li class=""><a class="dashboard-shortcuts-activity" title="Activity" href="#/dashboard_activity"><span>
 动态
+</span>
+      </a></li>
+      </li>
+
+      <li class=""><a class="dashboard-shortcuts-activity" title="Activity" href="#/dashboard_todo"><span>
+TODO
 </span>
       </a></li>
       <li class=""><a title="Groups" href="#/dashboard_groups"><span>
@@ -54,6 +61,9 @@
 
 </template>
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
+  .page-sidebar-pinned
+    .nav-header-btn
+      transform: rotate(90deg);
 
 </style>
 
@@ -87,15 +97,26 @@
 
     methods: {
       toggle: function () {
-        var istoggle = !this.theme.isToggle
+        Boolean
+        var isOpen = !this.theme.isOpen
         this.$store.dispatch('updataTheme', {
-          isToggle: istoggle
+          isOpen: isOpen,
+          isLock: !isOpen
         })
       },
+      closePanel: function () {
+        var isOpen = this.theme.isLock
+        if (!isOpen) {
+          this.$store.dispatch('updataTheme', {
+            isOpen: true,
+            isLock: false
+          })
+        }
+      },
       setting: function () {
-        var isSetting = !this.theme.isSetting
+        var isLock = !this.theme.isLock
         this.$store.dispatch('updataTheme', {
-          isSetting: isSetting
+          isLock: isLock
         })
       },
       activeOne: function (data) {

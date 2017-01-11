@@ -1,5 +1,5 @@
 <template>
-  <div id="codeviewer" class="codeviewer">
+  <div class="codeviewer">
   </div>
 </template>
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
@@ -10,7 +10,6 @@
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
   import ace from 'ace'
-  var editor = null
   export default {
     mixins: [ BaseComponent ],
     name: 'CodeViewer',
@@ -35,8 +34,10 @@
         }
       }
     },
+    editer: null,
     data: function () {
       return {
+        editerId: 'editer_' + (new Date() - 0) + '_' + parseInt(Math.random() * 1000),
         content: ''
       }
     },
@@ -46,22 +47,25 @@
       }
     },
     mounted () {
-      editor = ace.edit('codeviewer')
-      editor.setOptions(this.options)
-      editor.getSession().setMode('ace/mode/' + this.ctype)
-      console.log('this.contents', this.contents)
+      this.$options.editor = ace.edit(this.$el)
+      this.$options.editor.setOptions(this.options)
+      this.$options.editor.getSession().setMode('ace/mode/' + this.ctype)
+      this.$options.editor.$blockScrolling = Infinity
       this.changeContent()
-      editor.resize()
+      this.$options.editor.resize()
     },
     methods: {
       changeContent: function () {
         var str = ''
+        if (!this.$options.editor) {
+          return
+        }
         try {
           str = JSON.stringify(JSON.parse(this.contents), null, 2)
         } catch (e) {
 
         }
-        editor.setValue(str)
+        this.$options.editor.setValue(str)
       }
     }
   }

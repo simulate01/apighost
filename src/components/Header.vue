@@ -1,11 +1,11 @@
 <template>
-  <header class="header-collapsed navbar navbar-fixed-top navbar-gitlab"
-          :class="[{'header-collapsed':theme.isToggle,'header-collapsed':!theme.isToggle,'header-pinned-nav':theme.isSetting}]">
+  <header class="navbar navbar-fixed-top navbar-gitlab"
+          :class="[{'header-collapsed':!theme.isOpen,'header-expanded':theme.isOpen,'header-pinned-nav':theme.isLock}]">
     <div class="container-fluid">
       <div class="header-content">
         <button @click.stop="toggle" aria-label="Toggle global navigation" class="side-nav-toggle" type="button">
           <span class="sr-only">Toggle navigation</span>
-          <i class="iconfont icon-menu"></i>
+          <i class="ifont icon-menu"></i>
         </button>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -20,8 +20,18 @@
             </li>
             <li>
               <a title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
-                 data-container="body" href="#/projects_new"><i class="el-icon-plus"></i>
-              </a></li>
+                 data-container="body" href="#/dashboard_todo">
+                <el-badge :value="3">
+                  <i class="ifont icon-tongzhi"></i>
+                </el-badge>
+              </a>
+            </li>
+            <li>
+              <a title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
+                 data-container="body" href="#/projects_new">
+                <i class="el-icon-plus"></i>
+              </a>
+            </li>
             <li class="header-user dropdown">
               <el-popover
                   ref="user-tip"
@@ -55,7 +65,9 @@
           </ul>
         </div>
         <h1 class="title"><a href="#/dashboard_projects">Projects</a></h1>
-        <div class="header-logo"></div>
+        <div class="header-logo">
+          <img src="../assets/image/logo.png" alt="logo">
+        </div>
       </div>
     </div>
   </header>
@@ -65,6 +77,12 @@
     display block
     position relative
     border none
+
+  .header-logo
+    img
+      width 40px
+      height 40px
+
   .search
     margin-right: 10px;
     margin-left: 10px;
@@ -93,9 +111,9 @@
     },
     methods: {
       toggle: function () {
-        var istoggle = !this.theme.isToggle
+        var isOpen = !this.theme.isOpen
         this.$store.dispatch('updataTheme', {
-          isToggle: istoggle
+          isOpen: isOpen
         })
       },
       handleIconClick: function () {

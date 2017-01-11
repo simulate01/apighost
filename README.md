@@ -42,10 +42,13 @@ npm run deploy_beta
 npm run deploy_prod
 ```
 
+## 样式生成
+node_modules/.bin/et -i
+node_modules/.bin/et -o ./src/assets/style/theme
 
 ## 项目备注
 
 ## 参考资料
-[简书](http://www.ruanyifeng.com/blog/2016/07/yaml.html?f=tt)
+[YAML介绍](http://www.ruanyifeng.com/blog/2016/07/yaml.html?f=tt)
 
 
