@@ -94,7 +94,7 @@
 
   export default {
     mixins: [ BaseComponent ],
-    name: 'Editer',
+    name: 'MockEditer',
     components: { CodeViewer },
     props: {
       contents: {
