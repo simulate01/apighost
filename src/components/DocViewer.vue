@@ -17,39 +17,17 @@
           </section>
           <section class="parameters">
             <h4>参数</h4>
-            <div>
-              <el-table
-                  :data="getParameters(apiInfo.parameters)"
-                  style="width: 100%">
-                <el-table-column
-                    prop="name"
-                    label="Name"
-                    width="80">
-                </el-table-column>
-                <el-table-column
-                    prop="in"
-                    label="Located in"
-                    width="80">
-                </el-table-column>
-                <el-table-column
-                    prop="description"
-                    label="Description">
-                </el-table-column>
-                <el-table-column
-                    prop="required"
-                    label="Required">
-                </el-table-column>
-                <el-table-column
-                    prop="schema"
-                    label="Schema">
-                </el-table-column>
-              </el-table>
+            <div class="parametersContent" v-for="params in apiInfo.parameters">
+              <h6>{{params}}</h6>
+              <div>
+
+              </div>
             </div>
           </section>
           <section class="responses">
-            <h4>Responses</h4>
+            <h4>param</h4>
             <div class="responseContent">
-              <code-viewer :contents="JSON.stringify(apiInfo.responses)" :options="jsonViewOption"
+              <code-viewer :contents="JSON.stringify(getParameters(apiInfo.response))" :options="jsonViewOption"
                            :ctype="'json'"></code-viewer>
             </div>
           </section>
@@ -109,43 +87,87 @@
     },
     data: function () {
       return {
+        parameters: {},
+        split: '!',
         jsonViewOption: {
           'theme': '',
           'showLineNumbers': false
         }
       }
     },
-    watch: {
-      contents: function (val) {
-      }
-    },
+    watch: {},
     mounted () {
     },
     methods: {
-      analysisVal: function (val) {
-        var vals = val.split('|')
+      analysisKey: function (key, value) {
+        function isType (val) {
+          var map = [ 'string', 'number', 'boolean', 'object', 'array' ]
+          return map.indexOf(val) != -1
+        }
+
+        function isRequire (val) {
+          var map = [ 'true', 'false' ]
+          return map.indexOf(val) != -1
+        }
+
+        function checkType (data, val) {
+          if (isType(val)) {
+            data.schema = val
+          } else if (isRequire(val)) {
+            data.required = val
+          } else {
+            data.description = val
+          }
+        }
+
+        var vals = key.split(this.split)
+
         var data = {
+          name: vals[ 0 ],
           schema: '',
-          in: 'param',
-          required: true,
+          required: false,
           description: ''
         }
-        if (vals.length == 1) {
-          data.schema = vals[ 0 ]
-        } else if (vals.length == 2) {
-          data.schema = vals[ 0 ]
-          data.description = vals[ 1 ]
+
+        // 动态计算参数类型。如果没有指定参数类型则尝试计算参数类型。
+        if (value) {
+          if (typeof value === 'object') {
+            data.schema = 'object'
+          } else if (value instanceof Array) {
+            data.schema = 'array'
+          }
         }
+        console.log(data.name, data.schema, value)
+
+        checkType(data, vals[ 1 ])
+        checkType(data, vals[ 2 ])
+        checkType(data, vals[ 3 ])
+        checkType(data, vals[ 4 ])
+
         // todo 错误验证
         return data
       },
-      getParameters: function (data) {
+      getParameters: function (data1) {
+        if (!data1) {
+          return null
+        }
+        var data = JSON.parse(JSON.stringify(data1))
         var array = []
         if (data) {
           for (let key in data) {
             var parame = {}
-            Object.assign(parame, this.analysisVal(data[ key ]))
-            parame.name = key
+            Object.assign(parame, this.analysisKey(key, data[ key ]))
+            if (typeof data[ key ] === 'object') {
+              if (parame.schema == 'object') {
+                parame.child = {}
+                parame.child = this.getParameters(data[ key ])
+              } else if (parame.schema == 'array') {
+                parame.child = []
+                for (let i = 0; i < data[ key ].length; i++) {
+                  parame.child.push(this.getParameters(data[ key ][ i ]))
+                }
+              }
+            }
             array.push(parame)
           }
         }

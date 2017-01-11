@@ -45,10 +45,17 @@
       return {
         content: `path: /name
 type: get
-description: 获取用户姓名
+description: 获取用fdsafdsa户姓名
 parameters:
-  id: int|用户id
-  name: string|用户姓名
+  body:
+    id!number!true!好多描述信息哈哈哈:
+    name!string!good:
+    pet:
+      id!number!true!haoduo:
+      name!string!good:
+  path:
+    name:
+  query:
 responses:
   200:
     pageSize: int

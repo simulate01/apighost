@@ -10469,7 +10469,7 @@ body.modal-open {
 
 .layout-nav .controls {
     float: right;
-    padding: 7px 0
+    padding: 10px 0
 }
 
 
@@ -10499,7 +10499,7 @@ body.modal-open {
 
 .layout-nav .nav-links {
     border-bottom: none;
-    height: 51px
+    height: 57px
 }
 
 .layout-nav .nav-links li a {

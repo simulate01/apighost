@@ -97,6 +97,7 @@ TODO
 
     methods: {
       toggle: function () {
+        Boolean
         var isOpen = !this.theme.isOpen
         this.$store.dispatch('updataTheme', {
           isOpen: isOpen,
