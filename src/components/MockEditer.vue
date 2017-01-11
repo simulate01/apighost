@@ -27,18 +27,15 @@
       overflow-y auto
       background-color: #002B36;
       /*------------滚动条样式修改------------*/
-      &::-webkit-scrollbar
-      {
+      &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
       }
-      &::-webkit-scrollbar-track-piece
-      {
+      &::-webkit-scrollbar-track-piece {
         background-color: rgba(0, 0, 0, 0);
         -webkit-border-radius: 6px;
       }
-      &::-webkit-scrollbar-thumb:vertical
-      {
+      &::-webkit-scrollbar-thumb:vertical {
         height: 5px;
         background-color: rgba(125, 122, 122, 0.56);
         -webkit-border-radius: 6px;
@@ -106,7 +103,7 @@
       mockWords: {
         type: Array,
         default: function () {
-          return ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'', {'@date': '日期'}]  // mock 关键字
+          return [ '@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'', { '@date': '日期' } ]  // mock 关键字
         }
       }
     },
@@ -115,14 +112,18 @@
         errorList: [],
 //        defArr : ['definitions', 'path', 'description', 'parameters', 'type'],  // 定义trimDef方法的清理目标
         defArr: [],
-        jsonOutput: ''
+        jsonOutput: '', // mocked data json
+        mockOutput: '' // mocked schema obj
       }
     },
     computed: {
       normalizedMockWords () {
         var arr = []
         for (let word of this.mockWords) {
-          arr.push(toString.call(word) === toString.call({}) ? {'word': Object.keys(word)[0], 'desc': word[Object.keys(word)[0] || '']} : {'word': word, 'desc': word}) // {word} cannot work here,cause word may start with `@`or`|`
+          arr.push(toString.call(word) === toString.call({}) ? {
+            'word': Object.keys(word)[ 0 ],
+            'desc': word[ Object.keys(word)[ 0 ] || '' ]
+          } : { 'word': word, 'desc': word }) // {word} cannot work here,cause word may start with `@`or`|`
         }
         return arr
       }
@@ -132,6 +133,7 @@
       langTools.addCompleter(this.genMockCompleter()) // 配置mock关键字自动完成
       editor.setOptions((editorSetting.enableLiveAutocompletion = false, editorSetting))  // 因 `@` `|` 不能触发提示，禁用自动提示 转为由`afterExec`触发
       editor.resize()
+      editor.$blockScrolling = Infinity
       editor.setValue(this.pipe(this.contents, this.Yaml2MockedYaml)) // editor初始化
       // 触发提示
       editor.commands.on('afterExec', e => {
@@ -144,7 +146,7 @@
       // 对编辑器内容进行管道操作 注意异常捕获处理
       pipe () {
         var args = [].slice.call(arguments, 0)
-        var val = args[0]
+        var val = args[ 0 ]
         for (let arg of args) {
           if (args.indexOf(arg) != 0 && typeof arg === 'function') val = arg(val)
         }
@@ -171,7 +173,7 @@
       },
       // 跳到错误行 参数 `mark` 为`jsYaml.YAMLException`实例的`mark`属性
       jump2error (mark) {
-        editor.moveCursorToPosition({row: mark.line, column: mark.column})
+        editor.moveCursorToPosition({ row: mark.line, column: mark.column })
         editor.clearSelection()
         editor.scrollToLine(mark.line, true, true)
       },
@@ -183,7 +185,8 @@
       editorChange: function () {
         var content = editor.getValue()
         try {
-          this.jsonOutput = this.pipe(content, this.faultTolerant, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
+          this.mockOutput = this.pipe(content, this.faultTolerant, jsYaml.safeLoad, this.trimDef)
+          this.jsonOutput = this.pipe(this.mockOutput, this.mock2Data, JSON.stringify)
           this.clearError()
         } catch (e) {
           console.error(e)
@@ -194,7 +197,7 @@
       trimDef (input) {
         var defArr = this.defArr || []
         for (let def of defArr) {
-          delete input[def]
+          delete input[ def ]
         }
         return input
       },
@@ -230,7 +233,7 @@
         // 容错属性值前面缺空格
         input = input.replace(/([\n\r]?)(.*)([\n\r]?)/gm, function (m, p1, p2, p3) {
           var s = p2.split(/:(?!\s)/)
-          if (s.length >= 2) s[1] = s[0].indexOf(':') > -1 ? s[1]: ' ' + s[1]
+          if (s.length >= 2) s[ 1 ] = s[ 0 ].indexOf(':') > -1 ? s[ 1 ] : ' ' + s[ 1 ]
           return p1 + s.join(':') + p3
         })
         input = input.replace(/['"]?(@\w+)['"]?/gm, '\'$1\'') // 容错mock占位符没转义
@@ -258,7 +261,12 @@
             var isAt = /^[@|]/.test(at)
             callback(null, wordList.map(function (word, index) {
               var isWordStartWithAt = isAt && new RegExp(`^${at}`).test(word)
-              return {name: word, value: isWordStartWithAt ? word.replace(at, '') : word, score: isWordStartWithAt ? 1000 + index : 1000 - index, meta: 'mock'}
+              return {
+                name: word,
+                value: isWordStartWithAt ? word.replace(at, '') : word,
+                score: isWordStartWithAt ? 1000 + index : 1000 - index,
+                meta: 'mock'
+              }
             }))
           }
         }
