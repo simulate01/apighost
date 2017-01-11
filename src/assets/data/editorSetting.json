@@ -41,5 +41,5 @@
   "enableBlockSelect": true,
   "enableBasicAutocompletion": true,
   "enableSnippets": true,
-  "enableLiveAutocompletion": false
+  "enableLiveAutocompletion": true
 }

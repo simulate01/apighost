@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="mock-helper">
-      <div class="mock-word" v-for="word in mockList">
+      <div class="mock-word" v-for="word in mockWords">
         <el-button size="small" @click.native="insert(word)">{{word}}</el-button>
       </div>
     </div>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="preview">
-      <code-viewer :contents="jsonContent" :ctype="'json'"></code-viewer>
+      <code-viewer :contents="jsonOutput" :ctype="'json'"></code-viewer>
     </div>
   </div>
 </template>
@@ -87,90 +87,47 @@
   import jsYaml from 'js-yaml'
   import editorSetting from 'src/assets/data/editorSetting.json'
   var Range = ace.require('ace/range').Range
+  var langTools = ace.require('ace/ext/language_tools')
   var lodash = require('lodash')
   var Mock = require('mockjs')
-  window.Mock = Mock
-  window.jsYaml = jsYaml
-  window.lodash = lodash
   var editor = null
-  var session = null
 
   export default {
     mixins: [ BaseComponent ],
     name: 'Editer',
     components: { CodeViewer },
+    props: {
+      contents: {
+        type: String,
+        default: function () {
+          return 'hello mock'
+        }
+      }
+    },
     data: function () {
       return {
-        content: '',
-        jsonContent: '',
         errorList: [],
-        mockList: ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\''],
-        origindata: `
-path: /name
-type: get
-description: 获取用户姓名
-definitions:
-  Pet: &Pet
-    product_id: string|Unique identifier
-    description: string|Description of product.
-parameters:
-  id: int|用户id
-  name: string # 用户姓名
-responses:
-  200:
-    pageSize: int
-    list:
-      - name: string #描述
-        url: string|描述
-        pets:
-          - <<: *Pet
-        age: int
-  500:
-    code: int
-    error: string
-`
+        mockWords: ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\''],  // mock 关键字
+//        defArr : ['definitions', 'path', 'description', 'parameters', 'type'],  // 定义trimDef方法的清理目标
+        defArr: ['definitions'],
+        jsonOutput: ''
       }
     },
     mounted () {
       editor = ace.edit('editor')
-      var langTools = ace.require('ace/ext/language_tools')
-      var mockCompleter = {
-        getCompletions: function (editor, session, pos, prefix, callback) {
-          var wordList = ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'']
-          var row = pos.row
-          var col = pos.column - prefix.length
-          var at = session.getTextRange(new Range(row, col - 1, row, col))
-          if (prefix.length !== 0) {
-            wordList = wordList.filter(meta => {
-              var reg = new RegExp(prefix.split('').join('\\w*'))
-              return reg.test(meta)
-            })
-          }
-          var isAt = /^[@|]/.test(at)
-          callback(null, wordList.map(function (word, index) {
-            var isWordStartWithAt = isAt && new RegExp(`^${at}`).test(word)
-            return {name: word, value: isWordStartWithAt ? word.replace(at, '') : word, score: isWordStartWithAt ? 1000 + index : 1000 - index, meta: 'mock'}
-          }))
-        }
-      }
-      langTools.addCompleter(mockCompleter)
-      editor.setOptions(editorSetting)
+      langTools.addCompleter(this.genMockCompleter()) // 配置mock关键字自动完成
+      editor.setOptions((editorSetting.enableLiveAutocompletion = false, editorSetting))  // 因 `@` `|` 不能触发提示，禁用自动提示 转为由`afterExec`触发
       editor.resize()
-      editor.setValue(this.pipe(this.origindata, this.Yaml2MockedYaml))
-      session = editor.getSession()
-      window.session = session
-      window.editor = editor
-      window.page = this
-
-      this.editorChange()
-      session.on('change', lodash.debounce(e => this.editorChange(e), 300))
-      editor.commands.on('afterExec', function (e) {
-        if (e.command.name == 'insertstring' && /^[@\w|]$/.test(e.args)) {
-          editor.execCommand('startAutocomplete')
-        }
+      editor.setValue(this.pipe(this.contents, this.Yaml2MockedYaml)) // editor初始化
+      // 触发提示
+      editor.commands.on('afterExec', e => {
+        if (e.command.name == 'insertstring' && /^[@\w|]$/.test(e.args)) editor.execCommand('startAutocomplete')
       })
+      editor.getSession().on('change', lodash.debounce(e => this.editorChange(e), 300))  // 监听editor内容变化 去抖
+      this.editorChange()
     },
     methods: {
+      // 对编辑器内容进行管道操作 注意异常捕获处理
       pipe () {
         var args = [].slice.call(arguments, 0)
         var val = args[0]
@@ -179,40 +136,47 @@ responses:
         }
         return val
       },
+      // 折叠以某key开头的代码块
       collapseLinesWithStartKey (key) {
         if (!key) return null
         var patern = new RegExp(key)
         var ops = { regExp: true }
         editor.find(patern, ops)
-        session.toggleFoldWidget()
+        editor.getSession().toggleFoldWidget()
       },
+      // 标记错误
       markerError (e) {
         for (let error of this.errorList) {
           if (error.message == e.message) return
         }
         this.errorList.push(e)
       },
+      // 清理错误
       clearError (e) {
         this.errorList = []
       },
+      // 跳到错误行 参数 `mark` 为`jsYaml.YAMLException`实例的`mark`属性
       jump2error (mark) {
         editor.moveCursorToPosition({row: mark.line, column: mark.column})
         editor.clearSelection()
         editor.scrollToLine(mark.line, true, true)
       },
+      // 在当前光标处插入文本
       insert (text) {
         editor.insert(text)
       },
+      // editor Change事件处理
       editorChange: function () {
-        this.content = editor.getValue()
+        var content = editor.getValue()
         try {
-          this.jsonContent = this.pipe(this.content, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
+          this.jsonOutput = this.pipe(content, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
           this.clearError()
         } catch (e) {
-          console.log(e)
+          console.error(e)
           if (e instanceof jsYaml.YAMLException) this.markerError(e)
         }
       },
+      // 清理不需要的mock数据
       trimDef (input) {
 //        var defArr = ['definitions', 'path', 'description', 'parameters', 'type']
         var defArr = ['definitions']
@@ -221,6 +185,7 @@ responses:
         }
         return input
       },
+      // Yaml => MockedYaml
       Yaml2MockedYaml (input) {
         var reg = /:\s*(string|int|number|bool|boolean)(?:\s*[|#]\s*(.+))?[\n\r]/mig
         var replacer = (m, p1, p2) => {
@@ -243,14 +208,35 @@ responses:
               val = 'true'
               break
           }
-          console.log('p2:', p2)
           return p2 ? `|${count}: ${val} # ${p2}\n` : `|${count}: ${val}\n`
         }
         return input.replace(reg, replacer)
       },
+      // mock配置 => mock输出
       mock2Data (input) {
-//        var input = input.replace('@')
         return Mock.mock(input)
+      },
+      // 生成MockCompleter
+      genMockCompleter () {
+        return {
+          getCompletions: function (editor, session, pos, prefix, callback) {
+            var wordList = ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'']
+            var row = pos.row
+            var col = pos.column - prefix.length
+            var at = session.getTextRange(new Range(row, col - 1, row, col))
+            if (prefix.length !== 0) {
+              wordList = wordList.filter(meta => {
+                var reg = new RegExp(prefix.split('').join('\\w*'))
+                return reg.test(meta)
+              })
+            }
+            var isAt = /^[@|]/.test(at)
+            callback(null, wordList.map(function (word, index) {
+              var isWordStartWithAt = isAt && new RegExp(`^${at}`).test(word)
+              return {name: word, value: isWordStartWithAt ? word.replace(at, '') : word, score: isWordStartWithAt ? 1000 + index : 1000 - index, meta: 'mock'}
+            }))
+          }
+        }
       }
     }
   }

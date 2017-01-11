@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="content-wrapper page-with-layout-nav">
-      <editor></editor>
+      <editor :contents="docyaml"></editor>
     </div>
   </div>
 </template>
@@ -52,7 +52,32 @@
     components: { Editor },
     name: 'api_mock',
     data () {
-      return {}
+      return {
+        docyaml: `
+path: /name
+type: get
+description: 获取用户姓名
+definitions:
+  Pet: &Pet
+    product_id: string|Unique identifier
+    description: string|Description of product.
+parameters:
+  id: int|用户id
+  name: string # 用户姓名
+responses:
+  200:
+    pageSize: int
+    list:
+      - name: string #描述
+        url: string|描述
+        pets:
+          - <<: *Pet
+        age: int
+  500:
+    code: int
+    error: string
+`
+      }
     },
     mounted: function () {
     },
