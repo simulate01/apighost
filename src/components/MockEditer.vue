@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <div class="mock-helper">
-      <div class="mock-word" v-for="word in mockWords">
-        <el-button size="small" @click.native="insert(word)">{{word}}</el-button>
+      <div class="mock-word" v-for="word in normalizedMockWords">
+        <el-button size="small" @click.native="insert(word.word)">{{word.desc}}</el-button>
       </div>
     </div>
     <div class="editor">
@@ -102,15 +102,29 @@
         default: function () {
           return 'hello mock'
         }
+      },
+      mockWords: {
+        type: Array,
+        default: function () {
+          return ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'', {'@date': '日期'}]  // mock 关键字
+        }
       }
     },
     data: function () {
       return {
         errorList: [],
-        mockWords: ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\''],  // mock 关键字
 //        defArr : ['definitions', 'path', 'description', 'parameters', 'type'],  // 定义trimDef方法的清理目标
-        defArr: ['definitions'],
+        defArr: [],
         jsonOutput: ''
+      }
+    },
+    computed: {
+      normalizedMockWords () {
+        var arr = []
+        for (let word of this.mockWords) {
+          arr.push(toString.call(word) === toString.call({}) ? {'word': Object.keys(word)[0], 'desc': word[Object.keys(word)[0] || '']} : {'word': word, 'desc': word}) // {word} cannot work here,cause word may start with `@`or`|`
+        }
+        return arr
       }
     },
     mounted () {
@@ -169,7 +183,7 @@
       editorChange: function () {
         var content = editor.getValue()
         try {
-          this.jsonOutput = this.pipe(content, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
+          this.jsonOutput = this.pipe(content, this.faultTolerant, jsYaml.safeLoad, this.trimDef, this.mock2Data, JSON.stringify)
           this.clearError()
         } catch (e) {
           console.error(e)
@@ -178,8 +192,7 @@
       },
       // 清理不需要的mock数据
       trimDef (input) {
-//        var defArr = ['definitions', 'path', 'description', 'parameters', 'type']
-        var defArr = this.defArr
+        var defArr = this.defArr || []
         for (let def of defArr) {
           delete input[def]
         }
@@ -212,20 +225,32 @@
         }
         return input.replace(reg, replacer)
       },
+      // 容错
+      faultTolerant (input) {
+        // 容错属性值前面缺空格
+        input = input.replace(/([\n\r]?)(.*)([\n\r]?)/gm, function (m, p1, p2, p3) {
+          var s = p2.split(/:(?!\s)/)
+          if (s.length >= 2) s[1] = s[0].indexOf(':') > -1 ? s[1]: ' ' + s[1]
+          return p1 + s.join(':') + p3
+        })
+        input = input.replace(/['"]?(@\w+)['"]?/gm, '\'$1\'') // 容错mock占位符没转义
+        return input
+      },
       // mock配置 => mock输出
       mock2Data (input) {
         return Mock.mock(input)
       },
       // 生成MockCompleter
       genMockCompleter () {
+        var mockWords = this.normalizedMockWords.map(word => word.word)
         return {
           getCompletions: function (editor, session, pos, prefix, callback) {
-            var wordList = this.mockWords || []
             var row = pos.row
             var col = pos.column - prefix.length
             var at = session.getTextRange(new Range(row, col - 1, row, col))
+            var wordList = mockWords
             if (prefix.length !== 0) {
-              wordList = wordList.filter(meta => {
+              wordList = mockWords.filter(meta => {
                 var reg = new RegExp(prefix.split('').join('\\w*'))
                 return reg.test(meta)
               })
