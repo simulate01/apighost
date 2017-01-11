@@ -179,7 +179,7 @@
       // 清理不需要的mock数据
       trimDef (input) {
 //        var defArr = ['definitions', 'path', 'description', 'parameters', 'type']
-        var defArr = ['definitions']
+        var defArr = this.defArr
         for (let def of defArr) {
           delete input[def]
         }
@@ -220,7 +220,7 @@
       genMockCompleter () {
         return {
           getCompletions: function (editor, session, pos, prefix, callback) {
-            var wordList = ['@cword', '@url', '@email', '|10-100: 10', '|1: true', '|10: \'@cword\'']
+            var wordList = this.mockWords || []
             var row = pos.row
             var col = pos.column - prefix.length
             var at = session.getTextRange(new Range(row, col - 1, row, col))
