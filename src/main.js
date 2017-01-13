@@ -8,7 +8,7 @@ import EmaProxy from 'ema-proxy'
 import store from './store'
 require('./extend/filter')
 require('./assets/style/base.css')
-require('./assets/style/app.less')
+
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.config.devtools = !(process.env.NODE_ENV === 'production')

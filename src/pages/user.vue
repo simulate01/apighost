@@ -45,7 +45,7 @@ Member since Aug 19, 2016 4:15pm
   </div>
 </template>
 
-<style lang="less" rel="stylesheet/less" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
 
 </style>
 

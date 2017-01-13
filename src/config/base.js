@@ -8,7 +8,7 @@
  */
 let BaseConfig = {  // 开发模式配置
   hostTrack: 'http://192.168.199.24:8080/log-web/mlog',
-  host: 'http://rap.taobao.org/mockjsdata/11698/',
+  host: 'http://rap.taobao.org/mockjsdata/12245/',
   debug: true,
   develop: true
 }

@@ -6,7 +6,7 @@
     </div>
   </div>
 </template>
-<style lang="less" rel="stylesheet/less" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
   .welcome {
     background-color: rgba(64, 66, 69, 0.65);
     position: fixed;

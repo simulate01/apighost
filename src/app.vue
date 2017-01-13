@@ -9,7 +9,7 @@
 
 </template>
 <style lang="styl" rel="stylesheet/stylus" type="text/css">
-
+  @import "assets/style/app.styl";
 </style>
 <script type='text/ecmascript-6'>
   import CHeader from 'src/components/Header'

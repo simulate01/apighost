@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="less" rel="stylesheet/less" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
 
 </style>
 

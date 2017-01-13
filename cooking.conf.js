@@ -62,6 +62,10 @@ cooking.set({
   extends: [ 'vue2', 'less', 'lint', 'autoprefixer' ]
 })
 
+cooking.add('loader.stylus', {
+  test: /\.styl/,
+  loaders: [ 'css-loader', 'stylus-loader' ]
+})
 cooking.add('externals.ace', 'ace')
 if (process.env.NODE_ENV === 'production') {
   cooking.add('externals.vue', 'Vue')

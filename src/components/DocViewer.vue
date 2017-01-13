@@ -44,9 +44,9 @@
             </div>
           </section>
           <section class="responses">
-            <h4>param</h4>
+            <h4>响应数据</h4>
             <div class="responseContent">
-              <code-viewer :contents="JSON.stringify(getParameters(apiInfo.response))" :options="jsonViewOption"
+              <code-viewer :contents="JSON.stringify(apiInfo.responses)" :options="jsonViewOption"
                            :ctype="'json'"></code-viewer>
             </div>
           </section>

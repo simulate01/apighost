@@ -12,6 +12,7 @@
           <el-tabs class="nav-links" :active-name="activeName" @tab-click="tabHandleClick">
             <el-tab-pane label="成 员" name="member"></el-tab-pane>
             <el-tab-pane label="项 目" name="project"></el-tab-pane>
+            <el-tab-pane label="设 置" name="setting"></el-tab-pane>
           </el-tabs>
         </div>
         <div v-if="activeName=='member'" class="group-members-page prepend-top-default">
@@ -115,6 +116,29 @@ YMM-BACK
             </ul>
           </div>
 
+        </div>
+        <div v-if="activeName=='setting'">
+            <div class="panel panel-default prepend-top-default">
+              <div class="panel-heading">
+                基本设置
+              </div>
+              <div class="panel-body">
+                form
+              </div>
+            </div>
+            <div class="panel panel-danger">
+              <div class="panel-heading">删除分组</div>
+              <div class="panel-body">
+                <p>
+                  删除分组会导致该分组的项目全部被删除
+                  <br>
+                  <strong>移除分组后不能回退，确定移除分组</strong>
+                </p>
+                <div class="form-actions">
+                  <a data-confirm="Removed group can not be restored! Are you sure?" class="btn btn-remove" rel="nofollow" data-method="delete" href="/groups/h5developer">移除分组</a>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>

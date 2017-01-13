@@ -1,4 +1,10 @@
-
+@import '//at.alicdn.com/t/font_6zdy6m14c4k7qfr.css';
+.ifont {
+    font-family:"iconfont" !important;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 .atwho-view {
     position: absolute;
     top: 0;

@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<style lang="less" rel="stylesheet/less" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
   .desc {
     color: #4a4f52;
     margin: 30px;
@@ -76,7 +76,7 @@
         // 复杂弹出框传入参数 必须包含  name, 以及可选的有 data methods,这两块的数据会覆盖 弹出框对象中的方法和数据
 
         this.openDialog({
-          name: 'DDemo',
+          name: 'DGroupsNew',
           data: {
             title: '提交内容测试'
           },
