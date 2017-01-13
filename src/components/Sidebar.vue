@@ -16,34 +16,45 @@
       </a>
     </div>
     <ul class="nav nav-sidebar" tabindex="0" @click="closePanel" style="overflow: hidden; outline: none;">
-      <li class="home"><a title="Projects" class="dashboard-shortcuts-projects" href="#/dashboard_projects"><span>
-项目
-</span>
-      </a>
+      <li class="home">
+        <router-link to="dashboard_projects" title="Projects" class="dashboard-shortcuts-projects">
+          <span>
+            项目
+          </span>
+        </router-link>
       </li>
 
-      <li class=""><a class="dashboard-shortcuts-activity" title="Activity" href="#/dashboard_activity"><span>
+      <li class="">
+        <router-link to="dashboard_activity" class="dashboard-shortcuts-activity" title="Activity"><span>
 动态
 </span>
-      </a></li>
+        </router-link>
+      </li>
       </li>
 
-      <li class=""><a class="dashboard-shortcuts-activity" title="Activity" href="#/dashboard_todo"><span>
+      <li class="">
+        <router-link to="dashboard_todo" class="dashboard-shortcuts-activity" title="Activity"><span>
 TODO
 </span>
-      </a></li>
-      <li class=""><a title="Groups" href="#/dashboard_groups"><span>
+        </router-link>
+      </li>
+      <li class="">
+        <router-link to="dashboard_groups" title="Groups"><span>
 我的分组
 </span>
-      </a>
-      <li class=""><a title="Help" href="#/help"><span>
+        </router-link>
+      <li class="">
+        <router-link to="help" title="Help"><span>
 帮助
 </span>
-      </a></li>
-      <li class=""><a title="Profile Settings" data-placement="bottom" href="#/profile"><span>
+        </router-link>
+      </li>
+      <li class="">
+        <router-link to="profile" title="Profile Settings" data-placement="bottom"><span>
 用户设置
 </span>
-      </a></li>
+        </router-link>
+      </li>
     </ul>
 
     <div id="ascrail2000" class="nicescroll-rails nicescroll-rails-vr"

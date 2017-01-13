@@ -42,7 +42,7 @@
           <p class="blank-state-text">
             Groups are the best way to manage projects and members.
           </p>
-          <a class="btn btn-new" href="#/groups_new">New group
+          <a class="btn btn-new" href="/groups_new">New group
           </a></div>
         <div class="blank-state">
           <div class="blank-state-icon">
@@ -59,7 +59,7 @@
             <strong>100,000</strong>
             projects.
           </p>
-          <a class="btn btn-new" href="#/projects_new">New project
+          <a class="btn btn-new" href="/projects_new">New project
           </a></div>
 
       </div>

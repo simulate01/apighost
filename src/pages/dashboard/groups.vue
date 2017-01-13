@@ -10,33 +10,22 @@
       <div class="content">
         <div class="top-area">
           <el-tabs class="nav-links" :active-name="activeName" @tab-click="tabHandleClick">
-            <el-tab-pane label="我的分组" name="me"></el-tab-pane>
-            <el-tab-pane label="更多分组" name="more"></el-tab-pane>
+            <el-tab-pane label="我的组" name="me"></el-tab-pane>
+            <el-tab-pane label="我参加的组" name="more"></el-tab-pane>
           </el-tabs>
           <div class="nav-controls">
-            <a class="btn btn-new" href="#/groups_new">新建分组
-            </a></div>
+            <router-link class="btn btn-new" to="groups_new">新建分组
+            </router-link></div>
         </div>
         <ul v-if="activeName==='me'" class="content-list">
           <li v-for="item in tableInfo.data" class="group-row">
-            <div class="controls hidden-xs">
-              <a class="btn" href="#/groups_edit"><i class="fa fa-cogs"></i></a>
-              <a data-confirm="Are you sure you want to leave the &quot;util&quot; group?" class="btn"
-                 title="Leave this group" rel="nofollow" data-method="delete" href="/groups/util/group_members/leave"><i
-                  class="fa fa-sign-out"></i></a>
-            </div>
-            <div class="stats">
-              <span><i class="fa fa-bookmark"></i>7</span>
-              <span><i class="fa fa-users"></i>5</span>
-              <span class="visibility-icon has-tooltip" data-container="body" data-placement="left"
-                    title="Public - The group and any public projects can be viewed without any authentication."><i
-                  class="fa fa-globe"></i></span>
-            </div>
             <img class="avatar s40 hidden-xs"
-                 src="/assets/no_group_avatar-4a9d347a20d783caee8aaed4a37a65930cb8db965f61f3b72a2e954a0eaeb8ba.png"
+                 src="http://secure.gravatar.com/avatar/fc5654afbe167b98e93674175607b80e?s=52&d=identicon"
                  alt="No group avatar">
             <div class="title">
-              <router-link class="group-name" :to="{path:'/groups_members',query:item.name}">{{item.name}}</router-link>
+              <router-link class="group-name" :to="{path:'/groups_members',query:item.name}">
+                分组名称
+              </router-link>
               as <span>Owner</span>
             </div>
             <div class="description">
@@ -82,7 +71,7 @@
     },
     methods: {
       tabHandleClick (tab) {
-        this.activeName = tab.index
+        this.activeName = tab.name
       },
       loadData (pageId) {
         this.tableInfo.pagination.curr = pageId

@@ -17,10 +17,29 @@
           </section>
           <section class="parameters">
             <h4>参数</h4>
-            <div class="parametersContent" v-for="params in apiInfo.parameters">
-              <h6>{{params}}</h6>
+            <div class="parametersContent" v-for="(value,key) in apiInfo.parameters">
+              <h6>{{key}}</h6>
               <div>
-
+                <el-table
+                    :data="getParameters(value)"
+                    style="width: 100%">
+                  <el-table-column
+                      prop="name"
+                      label="Name">
+                  </el-table-column>
+                  <el-table-column
+                      prop="description"
+                      label="Description">
+                  </el-table-column>
+                  <el-table-column
+                      prop="required"
+                      label="Required">
+                  </el-table-column>
+                  <el-table-column
+                      prop="schema"
+                      label="Schema">
+                  </el-table-column>
+                </el-table>
               </div>
             </div>
           </section>
@@ -128,12 +147,12 @@
           required: false,
           description: ''
         }
-
         // 动态计算参数类型。如果没有指定参数类型则尝试计算参数类型。
         if (value) {
           if (typeof value === 'object') {
             data.schema = 'object'
-          } else if (value instanceof Array) {
+          }
+          if (value instanceof Array) {
             data.schema = 'array'
           }
         }
@@ -142,35 +161,41 @@
         checkType(data, vals[ 1 ])
         checkType(data, vals[ 2 ])
         checkType(data, vals[ 3 ])
-        checkType(data, vals[ 4 ])
 
         // todo 错误验证
         return data
       },
-      getParameters: function (data1) {
-        if (!data1) {
-          return null
-        }
-        var data = JSON.parse(JSON.stringify(data1))
+      getParameters: function (data) {
+        var me = this
         var array = []
-        if (data) {
+
+        if (!data) {
+          return array
+        }
+
+        function deepWalk (data, deep) {
+          var deepKey = ''
+          for (var i = 0; i < deep; i++) {
+            deepKey += '|----'
+          }
           for (let key in data) {
             var parame = {}
-            Object.assign(parame, this.analysisKey(key, data[ key ]))
+            Object.assign(parame, me.analysisKey(key, data[ key ]))
+            parame.name = deepKey + parame.name
+            array.push(parame)
             if (typeof data[ key ] === 'object') {
               if (parame.schema == 'object') {
-                parame.child = {}
-                parame.child = this.getParameters(data[ key ])
+                deepWalk(data[ key ], deep + 1)
               } else if (parame.schema == 'array') {
-                parame.child = []
-                for (let i = 0; i < data[ key ].length; i++) {
-                  parame.child.push(this.getParameters(data[ key ][ i ]))
+                if (data[ key ][ 0 ]) {
+                  deepWalk(data[ key ][ 0 ], deep + 1)
                 }
               }
             }
-            array.push(parame)
           }
+          return
         }
+        deepWalk(data, 0)
         return array
       },
       getResponse: function (data) {

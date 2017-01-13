@@ -8,7 +8,7 @@
  */
 const PageRouter = require('./components/PageRouter.vue')
 var map = {
-  mode: 'hash',
+  mode: 'history',
   base: __dirname,
   routes: [
     {

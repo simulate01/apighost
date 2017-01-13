@@ -6,7 +6,7 @@
       <div class="content">
         <div class="top-area">
           <el-tabs class="nav-links" :active-name="activeName" @tab-click="tabHandleClick">
-            <el-tab-pane label="我的项目" name="me"></el-tab-pane>
+            <el-tab-pane label="我的参与的项目" name="me"></el-tab-pane>
             <el-tab-pane label="关注项目" name="star"></el-tab-pane>
           </el-tabs>
           <div class="nav-controls">
@@ -19,44 +19,39 @@
               </el-input>
             </div>
 
-            <a class="btn btn-new" href="#/projects_new">创建项目</a>
+            <router-link class="btn btn-new" to="projects_new">创建项目</router-link>
           </div>
         </div>
 
         <div class="projects-list-holder">
           <ul v-if="activeName==='me'" class="projects-list content-list">
-            <li v-for="item in tableInfo.data" class="project-row">
-              <div class="controls">
-                <span><i class="el-icon-star-on"></i>0</span>
-
-                <span class="visibility-icon has-tooltip" data-container="body"
-                      data-placement="left" title=""
-                      data-original-title="Private - Project access must be granted explicitly to each user.">
-                 <i class="el-icon-information"></i>
-                </span>
-
-              </div>
+            <router-link :to="{path:'/project',query:{group:item.group,name:item.name}}" tag="li"
+                         v-for="item in tableInfo.data" class="project-row">
               <div class="title">
-                <router-link class="project" :to="{path:'/project',query:{group:item.group,name:item.name}}">
+                <div class="project">
                   <div class="dash-project-avatar">
                     <div class="avatar project-avatar s40 identicon" style="background-color: #E8EAF6; color: #555">D
                     </div>
                   </div>
                   <span class="project-full-name">
-                  <span class="namespace-name">
+                  <router-link tag="span" to="user" class="namespace-name">
+                  用户名称
+                  /
+                  </router-link>
+                  <router-link tag="span" to="groups_index" class="namespace-name">
                   {{item.group}}
                   /
-                  </span>
-                  <span class="project-name filter-title">
+                  </router-link>
+                  <router-link tag="span" to="project" class="project-name filter-title">
                   {{item.name}}
+                  </router-link>
                   </span>
-                  </span>
-                </router-link>
+                </div>
               </div>
               <div class="description">
                 <p>{{item.description}}</p>
               </div>
-            </li>
+            </router-link>
           </ul>
           <ul v-if="activeName==='star'" class="projects-list content-list">
           </ul>
@@ -67,7 +62,8 @@
 </template>
 
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
-
+  .project-name, .namespace-name
+    cursor pointer
 </style>
 
 <script type="text/ecmascript-6">

@@ -48,11 +48,11 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: '/definitions/Product'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '/definitions/Error'
   /estimates/price:
     get:
       summary: Price Estimates
@@ -98,11 +98,11 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/PriceEstimate'
+              $ref: '/definitions/PriceEstimate'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '/definitions/Error'
   /estimates/time:
     get:
       summary: Time Estimates
@@ -137,11 +137,11 @@
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: '/definitions/Product'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '/definitions/Error'
   /me:
     get:
       summary: User Profile
@@ -152,11 +152,11 @@
         200:
           description: Profile information for a user
           schema:
-            $ref: '#/definitions/Profile'
+            $ref: '/definitions/Profile'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '/definitions/Error'
   /history:
     get:
       summary: User Activity
@@ -178,11 +178,11 @@
         200:
           description: History information for the given user
           schema:
-            $ref: '#/definitions/Activities'
+            $ref: '/definitions/Activities'
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'`
+            $ref: '/definitions/Error'`
       try {
         var doc = yaml.safeLoad(path, 'utf8')
         console.log(doc)

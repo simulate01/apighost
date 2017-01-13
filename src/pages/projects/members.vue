@@ -10,41 +10,35 @@
       <div class="project-members-page prepend-top-default">
         <div class="panel panel-default">
           <div class="panel-heading">
-            Add new user to project
+            添加用户到项目
             <div class="controls">
               <a class="btn btn-grouped" title="Import members from another project" href="/h5developer/driver-loan2/project_members/import">Import members
               </a></div>
           </div>
           <div class="panel-body">
             <p class="light">
-              Users with access to this project are listed below.
+              下面列举的是可以访问项目的所有用户
             </p>
-            <form class="form-horizontal users-project-form" id="new_project_member" action="/h5developer/driver-loan2/project_members" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="4fLUIcOwjX0Z4J/uTGPbrsmWYu/Ya6e3rbjw95vM8urMigGyb57XxMf5sdd22Psg04eldvKTKVDzfBkzJSYE6w=="><div class="form-group">
-              <label class="control-label" for="project_member_user_ids">People</label>
-              <div class="col-sm-10">
-                <div class="select2-container select2-container-multi ajax-users-select multiselect input-large" id="s2id_user_ids"><ul class="select2-choices">  <li class="select2-search-field">    <label for="s2id_autogen91" class="select2-offscreen"></label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen91" placeholder="" style="width: 894px;">  </li></ul><div class="select2-drop select2-drop-multi select2-display-none ajax-users-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li></ul></div></div><input type="hidden" name="user_ids" id="user_ids" value="" class="ajax-users-select multiselect input-large" data-placeholder="Search for a user" data-null-user="false" data-any-user="false" data-email-user="true" data-first-user="false" data-current-user="false" data-push-code-to-protected-branches="null" data-author-id="" data-skip-users="null" tabindex="-1" style="display: none;">
-                <div class="help-block">
-                  Search for users by name, username, or email, or invite new ones using their email address.
-                </div>
-              </div>
-            </div>
-              <div class="form-group">
-                <label class="control-label" for="project_member_access_level">Project Access</label>
-                <div class="col-sm-10">
-                  <div class="select2-container project-access-select select2" id="s2id_access_level" style="width: 90px;"><a href="javascript:void(0)" class="select2-choice" tabindex="-1">   <span class="select2-chosen" id="select2-chosen-92">Guest</span><abbr class="select2-search-choice-close"></abbr>   <span class="select2-arrow" role="presentation"><b role="presentation"></b></span></a><label for="s2id_autogen92" class="select2-offscreen"></label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true" role="button" aria-labelledby="select2-chosen-92" id="s2id_autogen92"><div class="select2-drop select2-display-none select2-with-searchbox">   <div class="select2-search">       <label for="s2id_autogen92_search" class="select2-offscreen"></label>       <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-92" id="s2id_autogen92_search" placeholder="">   </div>   <ul class="select2-results" role="listbox" id="select2-results-92">   </ul></div></div><select name="access_level" id="access_level" class="project-access-select select2" tabindex="-1" title="" style="display: none;"><option value="10">Guest</option>
-                  <option value="20">Reporter</option>
-                  <option value="30">Developer</option>
-                  <option value="40">Master</option></select>
-                  <div class="help-block">
-                    Read more about role permissions
-                    <strong><a class="vlink" href="/help/user/permissions">here</a></strong>
-                  </div>
-                </div>
-              </div>
-              <div class="form-actions">
-                <input type="submit" name="commit" value="Add users to project" class="btn btn-create">
-              </div>
-            </form>
+            <el-form ref="form" :model="form" label-width="80px">
+
+              <el-form-item label="账号">
+                <el-input placeholder="账号" v-model="form.name">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="权限">
+                <el-select v-model="value" placeholder="请选择">
+                  <el-option
+                      v-for="item in Metadata.projectPower"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmit">添加用户到组</el-button>
+              </el-form-item>
+
+            </el-form>
           </div>
         </div>
 
@@ -76,17 +70,6 @@
             </div>
           </div>
           <ul class="content-list">
-
-
-
-
-
-
-
-
-
-
-
             <li class="group_member js-toggle-container" id="group_member_73">
               <div class="controls">
                 <strong class="control-text">Developer</strong>
@@ -162,12 +145,19 @@ Joined <time class="js-timeago" datetime="2016-10-08T09:42:57Z" title="" data-to
 <script type="text/ecmascript-6">
   import BasePage from 'src/extend/BasePage'
   import Server from 'src/extend/Server'
+  import {mapState} from 'vuex'
+
   export default{
     mixins: [ BasePage ],
     components: {},
     name: 'projects_members',
     data () {
       return {
+        form: {
+          name: '',
+          groupId: '',
+          description: ''
+        },
         // 一个典型列表数据格式
         tableInfo: {
           search: {},
@@ -183,6 +173,9 @@ Joined <time class="js-timeago" datetime="2016-10-08T09:42:57Z" title="" data-to
     mounted: function () {
       this.loadData(1)
     },
+    computed: mapState({
+      Metadata: state => state.Metadata
+    }),
     methods: {
       loadData (pageId) {
         this.tableInfo.pagination.curr = pageId
@@ -201,6 +194,9 @@ Joined <time class="js-timeago" datetime="2016-10-08T09:42:57Z" title="" data-to
         }).catch(() => {
 
         })
+      },
+      onSubmit: function () {
+
       },
       search () {
         this.loadData(this.tableInfo.pagination.curr)

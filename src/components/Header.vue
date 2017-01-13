@@ -19,18 +19,18 @@
               </div>
             </li>
             <li>
-              <a title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
-                 data-container="body" href="#/dashboard_todo">
+              <router-link title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
+                           data-container="body" to="dashboard_todo">
                 <el-badge :value="3">
                   <i class="ifont icon-tongzhi"></i>
                 </el-badge>
-              </a>
+              </router-link>
             </li>
             <li>
-              <a title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
-                 data-container="body" href="#/projects_new">
+              <router-link title="New project" aria-label="New project" data-toggle="tooltip" data-placement="bottom"
+                           data-container="body" to="projects_new">
                 <i class="el-icon-plus"></i>
-              </a>
+              </router-link>
             </li>
             <li class="header-user dropdown">
               <el-popover
@@ -41,10 +41,11 @@
                 <div class="dropdown-menu-nav dropdown-menu-align-right">
                   <ul>
                     <li>
-                      <a class="profile-link" aria-label="Profile" data-user="wangkm" href="#/user">Profile</a>
+                      <router-link class="profile-link" aria-label="Profile" data-user="wangkm" to="user">Profile
+                      </router-link>
                     </li>
                     <li>
-                      <a aria-label="Profile Settings" href="#/profile">Profile Settings</a>
+                      <router-link aria-label="Profile Settings" to="profile">Profile Settings</router-link>
                     </li>
                     <li class="divider"></li>
                     <li>
@@ -55,7 +56,7 @@
                   </ul>
                 </div>
               </el-popover>
-              <a v-popover:user-tip class="header-user-dropdown-toggle" data-toggle="dropdown" href="#/user">
+              <a v-popover:user-tip class="header-user-dropdown-toggle" data-toggle="dropdown">
                 <img width="26" height="26" class="header-user-avatar"
                      src="http://secure.gravatar.com/avatar/fc5654afbe167b98e93674175607b80e?s=52&amp;d=identicon"
                      alt="Fc5654afbe167b98e93674175607b80e?s=52&amp;d=identicon">
@@ -64,7 +65,7 @@
             </li>
           </ul>
         </div>
-        <h1 class="title"><a href="#/dashboard_projects">Projects</a></h1>
+        <h1 class="title"><a href=""></a></h1>
         <div class="header-logo">
           <img src="../assets/image/logo.png" alt="logo">
         </div>

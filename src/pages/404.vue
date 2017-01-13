@@ -4,7 +4,7 @@
     <div class="error-content">
       <h3><i class="fa fa-warning text-yellow"></i> 页面找不到了</h3>
       <p>
-        <a href="#/home">回到首页</a>
+        <a href="/home">回到首页</a>
       </p>
     </div><!-- /.error-content -->
   </div>

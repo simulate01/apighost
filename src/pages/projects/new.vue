@@ -25,7 +25,20 @@
             <div class="col-lg-9">
 
               <el-form ref="form" :model="form" label-width="80px">
-
+                <el-form-item label="图标">
+                  <div class="headIcon">
+                    <img :src="form.image">
+                  </div>
+                  <el-upload
+                      action="//jsonplaceholder.typicode.com/posts/"
+                      :multiple=false
+                      :show-upload-list=false
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove">
+                    <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+                    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                  </el-upload>
+                </el-form-item>
                 <el-form-item label="所属组">
                   <el-select v-model="value" placeholder="请选择">
                     <el-option
@@ -56,7 +69,15 @@
 </template>
 
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
-
+  .headIcon
+    width 150px
+    height 150px
+    border-radius 50%
+    overflow hidden
+    margin 20px
+    img
+      width: 100%
+      height 100%
 </style>
 
 <script type="text/ecmascript-6">
@@ -80,6 +101,7 @@
         } ],
         value: '',
         form: {
+          image: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
           name: '',
           groupId: '',
           description: ''

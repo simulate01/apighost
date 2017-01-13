@@ -76,7 +76,7 @@
 
           </div>
           <div class="col-sm-7 brand-holder pull-left">
-            <h1>
+            <h1 class="logoText">
               Go InterFace
             </h1>
             <h3>接口定义神器</h3>
@@ -105,6 +105,9 @@
   </div>
 </template>
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
+  .logoText
+    text-shadow: 0 6px 1px rgba(0, 0, 0, 0.2);
+    font-family: 'Lobster', cursive;
   .center-logo
     img
       width 40px

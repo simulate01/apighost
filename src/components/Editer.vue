@@ -28,6 +28,7 @@
       padding 20px
       height 100%
       flex 1
+      overflow auto
 </style>
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
@@ -48,6 +49,9 @@ type: get
 description: 获取用fdsafdsa户姓名
 parameters:
   body:
+    good:
+      - name: good
+        age: 123
     id!number!true!好多描述信息哈哈哈:
     name!string!good:
     pet:

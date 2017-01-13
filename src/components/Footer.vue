@@ -3,7 +3,7 @@
     <div class="float-right hidden-xs">
       <b>Version</b> {{packageInfo.version}}
     </div>
-    <strong>Copyright © 2014-2015 <a href="#/">{{packageInfo.description}}</a>.</strong> All rights
+    <strong>Copyright © 2014-2015 <a href="/">{{packageInfo.description}}</a>.</strong> All rights
     reserved.
   </footer>
 </template>

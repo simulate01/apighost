@@ -19,7 +19,7 @@
           </div>
           <ul class="nav-links scrolling-tabs">
             <li class="home">
-              <a title="Project" class="shortcuts-project" href="#/project">
+              <a title="Project" class="shortcuts-project" href="/project">
                 <span>项目</span>
               </a>
             </li>
