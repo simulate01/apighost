@@ -63,8 +63,12 @@ cooking.set({
 })
 
 cooking.add('loader.stylus', {
-  test: /\.styl/,
+  test: /\.styl$/,
   loaders: [ 'css-loader', 'stylus-loader' ]
+})
+cooking.add('loader.markdown', {
+  test: /\.md$/,
+  loaders: [ 'html-loader', 'markdown-loader' ]
 })
 cooking.add('externals.ace', 'ace')
 if (process.env.NODE_ENV === 'production') {

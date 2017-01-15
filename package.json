@@ -28,6 +28,7 @@
     "eslint-plugin-html": "^1.6.0",
     "js-yaml": "^3.7.0",
     "lodash": "^4.17.4",
+    "markdown-loader": "^0.1.7",
     "mockjs": "^1.0.1-beta3",
     "truck-lib": "^0.0.17",
     "vue": "^2.1.8",

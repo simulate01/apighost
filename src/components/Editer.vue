@@ -44,19 +44,26 @@
     components: { CodeViewer, DocViewer },
     data: function () {
       return {
-        content: `path: /name
+        content: `definitions: &defaults
+  Pet:
+    product_id: string|Unique identifier
+    description: string|Description of product.
+path: /name
 type: get
 description: 获取用fdsafdsa户姓名
 parameters:
   body:
+    <<: *defaults
     good:
-      - name: good
+      - fdsfdsa: good
         age: 123
-    id!number!true!好多描述信息哈哈哈:
+    id!number!true!好多描述信息哈哈哈: fdsafdsa fdsafdsa 获取用fdsafdsa户姓名fdsafdsafdsafdsafdsafdsafdsafdsafdsafdfdsafdsaf fdsafds fdsafdsa fdsaf fdsa fdsafdsa fdsaf dsafds a fdsafd
     name!string!good:
     pet:
       id!number!true!haoduo:
-      name!string!good:
+      name!object!good:
+        good: 123
+        hao: 23
   path:
     name:
   query:
@@ -72,10 +79,6 @@ responses:
   500:
     code: int
     error: string
-definitions:
-  Pet:
-    product_id: string|Unique identifier
-    description: string|Description of product.
 `,
         apiInfo: {
           type: ''
