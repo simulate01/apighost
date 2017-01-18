@@ -39,7 +39,6 @@
                     <el-form-item>
                       <el-button type="primary" @click="loginSubmit">登 陆</el-button>
                     </el-form-item>
-
                   </el-form>
                 </div>
               </div>
