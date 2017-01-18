@@ -21,11 +21,12 @@
             </el-tooltip>
           </el-button>
           <el-button type="primary">保存</el-button>
+          <el-button type="success" @click="editMock">MOCK</el-button>
           <el-button type="danger">删除</el-button>
         </div>
       </div>
     </div>
-    <div class="content-wrapper page-with-layout-nav">
+    <div class="content-wrapper page-with-layout-nav" :style="{height: (appInfo.size.height-50-58) + 'px'}">
       <editer></editer>
     </div>
   </div>
@@ -33,12 +34,15 @@
 
 <style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
   .page
+    overflow hidden
+    display box
+    -webkit-box-orient: vertical;
     .layout-nav
       .controls-left
         float left
     .content-wrapper
       display flex
-      height 700px
+      flex 1
       width 100%
 
 </style>
@@ -46,6 +50,8 @@
 <script type="text/ecmascript-6">
   import BasePage from 'src/extend/BasePage'
   import Editer from 'src/components/Editer'
+  import {mapState} from 'vuex'
+
   export default{
     mixins: [ BasePage ],
     components: { Editer },
@@ -65,11 +71,22 @@
         value10: []
       }
     },
+    computed: mapState({
+      appInfo: state => state.app
+    }),
     mounted: function () {
     },
     methods: {
       handleClick: function () {
 
+      },
+      editMock: function () {
+        this.openDialog({
+          name: 'DMock',
+          data: {
+          },
+          methods: {}
+        })
       }
     }
   }

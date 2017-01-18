@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="editor">
-      <div class="econ" id="editor">
+      <div class="econ" id="mockeditor">
       </div>
       <div class="error-hint">
         <p @click="jump2error(error.mark)" v-for="error in errorList">{{error.message}}</p>
@@ -87,7 +87,6 @@
   var langTools = ace.require('ace/ext/language_tools')
   var lodash = require('lodash')
   var Mock = require('mockjs')
-  var editor = null
 
   export default {
     mixins: [ BaseComponent ],
@@ -116,30 +115,28 @@
         mockOutput: '' // mocked schema obj
       }
     },
+    editor: null,
     computed: {
       normalizedMockWords () {
         var arr = []
         for (let word of this.mockWords) {
-          arr.push(toString.call(word) === toString.call({}) ? {
-            'word': Object.keys(word)[ 0 ],
-            'desc': word[ Object.keys(word)[ 0 ] || '' ]
-          } : { 'word': word, 'desc': word }) // {word} cannot work here,cause word may start with `@`or`|`
+          arr.push(toString.call(word) === toString.call({}) ? { word: Object.keys(word)[ 0 ], desc: word[ Object.keys(word)[ 0 ] || '' ] } : { word: word, desc: word }) // {word} cannot work here,cause word may start with `@`or`|`
         }
         return arr
       }
     },
     mounted () {
-      editor = ace.edit('editor')
+      this.$options.editor = ace.edit('mockeditor')
       langTools.addCompleter(this.genMockCompleter()) // 配置mock关键字自动完成
-      editor.setOptions((editorSetting.enableLiveAutocompletion = false, editorSetting))  // 因 `@` `|` 不能触发提示，禁用自动提示 转为由`afterExec`触发
-      editor.resize()
-      editor.$blockScrolling = Infinity
-      editor.setValue(this.pipe(this.contents, this.Yaml2MockedYaml)) // editor初始化
+      this.$options.editor.setOptions((editorSetting.enableLiveAutocompletion = false, editorSetting))  // 因 `@` `|` 不能触发提示，禁用自动提示 转为由`afterExec`触发
+      this.$options.editor.resize()
+      this.$options.editor.$blockScrolling = Infinity
+      this.$options.editor.setValue(this.pipe(this.contents, this.Yaml2MockedYaml)) // editor初始化
       // 触发提示
-      editor.commands.on('afterExec', e => {
-        if (e.command.name == 'insertstring' && /^[@\w|]$/.test(e.args)) editor.execCommand('startAutocomplete')
+      this.$options.editor.commands.on('afterExec', e => {
+        if (e.command.name == 'insertstring' && /^[@\w|]$/.test(e.args)) this.$options.editor.execCommand('startAutocomplete')
       })
-      editor.getSession().on('change', lodash.debounce(e => this.editorChange(e), 300))  // 监听editor内容变化 去抖
+      this.$options.editor.getSession().on('change', lodash.debounce(e => this.editorChange(e), 300))  // 监听editor内容变化 去抖
       this.editorChange()
     },
     methods: {
@@ -157,8 +154,8 @@
         if (!key) return null
         var patern = new RegExp(key)
         var ops = { regExp: true }
-        editor.find(patern, ops)
-        editor.getSession().toggleFoldWidget()
+        this.$options.editor.find(patern, ops)
+        this.$options.editor.getSession().toggleFoldWidget()
       },
       // 标记错误
       markerError (e) {
@@ -173,17 +170,17 @@
       },
       // 跳到错误行 参数 `mark` 为`jsYaml.YAMLException`实例的`mark`属性
       jump2error (mark) {
-        editor.moveCursorToPosition({ row: mark.line, column: mark.column })
-        editor.clearSelection()
-        editor.scrollToLine(mark.line, true, true)
+        this.$options.editor.moveCursorToPosition({ row: mark.line, column: mark.column })
+        this.$options.editor.clearSelection()
+        this.$options.editor.scrollToLine(mark.line, true, true)
       },
       // 在当前光标处插入文本
       insert (text) {
-        editor.insert(text)
+        this.$options.editor.insert(text)
       },
       // editor Change事件处理
       editorChange: function () {
-        var content = editor.getValue()
+        var content = this.$options.editor.getValue()
         try {
           this.mockOutput = this.pipe(content, this.faultTolerant, jsYaml.safeLoad, this.trimDef)
           this.jsonOutput = this.pipe(this.mockOutput, this.mock2Data, JSON.stringify)

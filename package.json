@@ -1,7 +1,7 @@
 {
-  "name": "apighost",
+  "name": "gointerface",
   "version": "0.1.0",
-  "description": "apiGhost",
+  "description": "Go Interface",
   "Copyright": "api mock test tool.©2016-2017",
   "private": false,
   "keywords": [],

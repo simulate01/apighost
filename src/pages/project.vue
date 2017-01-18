@@ -64,19 +64,29 @@
                   <el-collapse @change="handleChange">
                     <el-collapse-item title="一致性 Consistency" name="1">
                       <template slot="title">
-                        <span class="header">
+                        <div class="header">
                           <span class="type" :class="[item.type]">{{item.type}}</span>
                           <span class="path">{{item.path}}</span>
-                          <span class="desc">{{item.desc}}</span>
-                          <div class="controls">
-                            <router-link to="api_new">
-                              <el-button type="primary" size="small" icon="edit">
-                                编辑
+                          <span class="version">{{item.version}}</span>
+                          <div class="controls" @click.stop>
+                            <el-dropdown trigger="click">
+                              <el-button type="primary" size="mini">
+                                更多<i class="el-icon-caret-bottom el-icon--right"></i>
                               </el-button>
-                            </router-link>
-                            <el-button type="primary" size="small">MOCK<i class="ifont icon-mock"></i></el-button>
+                              <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                  <router-link tag="span" to="api_new">编 辑</router-link>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                  <router-link tag="span" to="api_mock">MOCK数据</router-link>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                  <router-link tag="span" to="api_diff">版本比对</router-link>
+                                </el-dropdown-item>
+                              </el-dropdown-menu>
+                            </el-dropdown>
                           </div>
-                        </span>
+                        </div>
                       </template>
                       <doc-viewer :apiInfo="getApiInfo(content)"></doc-viewer>
 
@@ -281,7 +291,7 @@
     .apiItem
       .header
         position relative
-        width: 90%;
+        width: 90%
         display inline-block
         .type
           font-size 18px
@@ -290,9 +300,12 @@
           width 30px
         .path
           margin-left 20px
-        .desc
-          margin-left 20px
-          max-width:300px
+        .version
+          background-color #5ac74b
+          color #fff
+          padding 2px 4px
+          border-radius 4px
+
         .controls
           position: absolute;
           right 1px

@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_6zdy6m14c4k7qfr.css';
+@import '//at.alicdn.com/t/font_hhgmvzl5b384cxr.css';
 .ifont {
     font-family:"iconfont" !important;
     font-style:normal;
@@ -11008,7 +11008,6 @@ html.turbolinks-progress-bar::before {
 
 .page-with-sidebar {
     padding-top: 50px;
-    padding-bottom: 25px;
     transition: padding 0.15s
 }
 

@@ -1,6 +1,7 @@
 /**
  * 所有页面基础类
  */
+import {mapState} from 'vuex'
 
 export default {
   /* 父类向下传递的参数数据 */
@@ -8,6 +9,9 @@ export default {
   data: function () {
     return {}
   },
+  computed: mapState({
+    packageInfo: state => state.app.packageInfo
+  }),
   // 组件是你刚被创建,组件属性计算前
   beforeCreated: function () {
     console.log('component---beforeCreated', this.$options.name)

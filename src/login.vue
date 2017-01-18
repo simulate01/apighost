@@ -25,8 +25,8 @@
                 </div>
                 <div class="login-body">
                   <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="80px">
-                    <el-form-item label="账 户" prop="account">
-                      <el-input placeholder="账户" v-model="loginForm.account">
+                    <el-form-item label="邮 箱" prop="account">
+                      <el-input placeholder="邮箱" v-model="loginForm.account">
                       </el-input>
                     </el-form-item>
                     <el-form-item label="密 码" prop="password">
@@ -37,7 +37,7 @@
                       <el-switch on-text="" off-text="" v-model="loginForm.remember"></el-switch>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="primary" @click="submitForm">登 陆</el-button>
+                      <el-button type="primary" @click="loginSubmit">登 陆</el-button>
                     </el-form-item>
 
                   </el-form>
@@ -49,10 +49,6 @@
                 </div>
                 <div class="login-body">
                   <el-form ref="registerForm" :model="registerForm" :rules="registerRules" label-width="80px">
-                    <el-form-item label="账 户" prop="account">
-                      <el-input placeholder="账户" v-model="registerForm.account">
-                      </el-input>
-                    </el-form-item>
                     <el-form-item label="姓 名" prop="password">
                       <el-input placeholder="姓 名" v-model="registerForm.name">
                       </el-input>
@@ -65,10 +61,13 @@
                       <el-input placeholder="密 码" v-model="registerForm.password">
                       </el-input>
                     </el-form-item>
-                    <el-form-item>
-                      <el-button type="primary" @click="submitForm">注 册</el-button>
+                    <el-form-item label="确认密码" prop="password">
+                      <el-input placeholder="确认密码" v-model="registerForm.password">
+                      </el-input>
                     </el-form-item>
-
+                    <el-form-item>
+                      <el-button type="primary" @click="registerSubmit">注 册</el-button>
+                    </el-form-item>
                   </el-form>
                 </div>
               </div>
@@ -90,17 +89,10 @@
     <hr>
     <div class="container">
       <div class="footer-links">
-        <a href="/explore">Explore</a>
-        <a href="/help">Help</a>
-        <a href="https://about.gitlab.com/">About GitLab</a>
+
       </div>
     </div>
 
-
-    <div class="device-xs visible-xs"></div>
-    <div class="device-sm visible-sm"></div>
-    <div class="device-md visible-md"></div>
-    <div class="device-lg visible-lg"></div>
 
   </div>
 </template>
@@ -108,10 +100,12 @@
   .logoText
     text-shadow: 0 6px 1px rgba(0, 0, 0, 0.2);
     font-family: 'Lobster', cursive;
+
   .center-logo
     img
       width 40px
       height 40px
+
   .login-box
     padding 20px 20px
     border 1px solid #ddd
@@ -228,8 +222,21 @@
           window.location.replace('index.html')
         }
       },
-      submitForm () {
-        this.$refs.form.validate((valid) => {
+      loginSubmit () {
+        this.$refs.loginForm.validate((valid) => {
+          if (valid) {
+            window.alert('submit!')
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      /**
+       * 注册内容提交
+       */
+      registerSubmit: function () {
+        this.$refs.registerForm.validate((valid) => {
           if (valid) {
             window.alert('submit!')
           } else {

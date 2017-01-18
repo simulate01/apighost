@@ -68,7 +68,7 @@ responses:
   200:
     pageSize: int
     list:
-      - name: string #描述
+      - name!string: string #描述
         url: string|描述
         pets:
           - <<: *Pet

@@ -29,7 +29,11 @@ const state = {
     packageInfo,
     navIndex: 0, // 导航索引
     navTwoIndex: 0, // 导航索引
-    activeIndex: null, // 当前被选中的页面唯一编号id
+    activeIndex: null, // 当前被选中的页面唯一编号id,
+    size: {
+      width: 0,
+      height: 0
+    },
     menuData: [] // 功能菜单列表信息
   },
   Lng: Lng,

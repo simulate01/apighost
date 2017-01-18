@@ -1,15 +1,27 @@
 <template>
-  <div v-if="initStatus" class="wrapper">
-    <c-header></c-header>
-    <c-content></c-content>
-    <c-dialogs></c-dialogs>
-    <div v-loading.fullscreen.lock="showLoading"></div>
+  <div>
+
+    <div id="sizeContent" class="sizeContent"></div>
+    <div v-if="initStatus" class="wrapper">
+      <c-header></c-header>
+      <c-content></c-content>
+      <c-dialogs></c-dialogs>
+      <div v-loading.fullscreen.lock="showLoading"></div>
+    </div>
+    <welcome v-else @loadend="initStatus=true"></welcome>
   </div>
-  <welcome v-else @loadend="initStatus=true"></welcome>
 
 </template>
 <style lang="styl" rel="stylesheet/stylus" type="text/css">
   @import "assets/style/app.styl";
+  .sizeContent
+    position: fixed
+    width 100%
+    height 100%
+    left 0
+    top 0
+    visibility hidden
+
 </style>
 <script type='text/ecmascript-6'>
   import CHeader from 'src/components/Header'
@@ -50,6 +62,10 @@
             }
           }
         })
+      })
+      this.$store.dispatch('changeAppSize', {
+        width: document.getElementById('sizeContent').offsetWidth,
+        height: document.getElementById('sizeContent').offsetHeight
       })
     },
     computed: mapState({

@@ -3,8 +3,7 @@
 
     <div class="content">
       <div class="editor">
-        <div class="econ" id="editor">
-        </div>
+        <yaml-editer :contents="content" :on-change="editorChange"></yaml-editer>
       </div>
       <div class="preview">
         <doc-viewer :apiInfo="apiInfo"></doc-viewer>
@@ -21,11 +20,12 @@
     .editor
       height 100%
       flex 1
+      border-right 1px solid #ddd
       .econ
         height 100%
         width 100%
     .preview
-      padding 20px
+      padding 5px
       height 100%
       flex 1
       overflow auto
@@ -34,14 +34,13 @@
   import BaseComponent from 'src/extend/BaseComponent'
   import CodeViewer from 'src/components/CodeViewer'
   import DocViewer from 'src/components/DocViewer'
-  import ace from 'ace'
+  import YamlEditer from 'src/components/YamlEditer'
   import jsYaml from 'js-yaml'
-  import editorSetting from 'src/assets/data/editorSetting.json'
-  var editor = null
   export default {
     mixins: [ BaseComponent ],
     name: 'Editer',
-    components: { CodeViewer, DocViewer },
+    components: { CodeViewer, DocViewer, YamlEditer },
+    editer: null,
     data: function () {
       return {
         content: `definitions: &defaults
@@ -86,31 +85,24 @@ responses:
 
       }
     },
+
     mounted () {
-      editor = ace.edit('editor')
-      editor.setOptions(editorSetting)
-      editor.resize()
-      this.editorChange()
-      editor.setValue(this.content)
-      editor.$blockScrolling = Infinity
-      editor.getSession().on('change', e => {
-        this.content = editor.getValue()
-        this.editorChange()
-      })
     },
     methods: {
-
-      editorChange: function () {
+      editorChange: function (data) {
         var apiInfo
+        var hasError = false
+        this.content = data
         try {
           apiInfo = jsYaml.safeLoad(this.content)
           console.log(typeof this.apiInfo, this.apiInfo)
         } catch (e) {
-          apiInfo = {}
+          hasError = true
         } finally {
-          this.apiInfo = apiInfo
+          if (!hasError) {
+            this.apiInfo = apiInfo
+          }
         }
-        editor.getValue()
       }
     }
   }

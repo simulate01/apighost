@@ -57,7 +57,6 @@
       }).catch(() => {
         // this.$alert('获取用户信息失败')
       })
-      this.$emit('loadend')
     },
     methods: {}
   }

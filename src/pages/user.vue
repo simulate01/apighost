@@ -32,6 +32,7 @@ Member since Aug 19, 2016 4:15pm
 </span>
             </div>
             <div class="cover-desc">
+              电话：132123121
             </div>
             <ul class="nav-links center user-profile-nav">
             </ul>

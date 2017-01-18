@@ -73,3 +73,11 @@ export const changeNavTwoIndex = ({ commit }, data) => {
   commit('changeNavTwoIndex', data)
 }
 
+/**
+ *
+ * @param context
+ */
+export const changeAppSize = ({ commit }, data) => {
+  commit('changeAppSize', data)
+}
+

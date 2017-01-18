@@ -30,3 +30,12 @@ export const updataTheme = (state, data) => {
   Object.assign(state.app.theme, data)
   window.localStorage.setItem('theme', JSON.stringify(state.app.theme))
 }
+
+export const changeAppSize = (state, data) => {
+  if (data.width) {
+    state.app.size.width = data.width
+  }
+  if (data.height) {
+    state.app.size.height = data.height
+  }
+}
