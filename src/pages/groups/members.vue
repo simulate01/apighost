@@ -184,6 +184,7 @@ Joined <time class="js-timeago" datetime="2016-10-08T09:43:04Z" title="" data-to
         data.pageSize = this.tableInfo.pagination.size
         Server({
           url: 'projects',
+          mock: true,
           method: 'post',
           data: data
         }).then((response) => {

@@ -10,7 +10,8 @@ export default {
     return {}
   },
   computed: mapState({
-    packageInfo: state => state.app.packageInfo
+    packageInfo: state => state.app.packageInfo,
+    userInfo: state => state.userInfo
   }),
   // 组件是你刚被创建,组件属性计算前
   beforeCreated: function () {

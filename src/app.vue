@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div id="sizeContent" class="sizeContent"></div>
     <div v-if="initStatus" class="wrapper">
       <c-header></c-header>

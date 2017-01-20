@@ -119,6 +119,7 @@
         data.pageSize = this.tableInfo.pagination.size
         Server({
           url: 'approve/page',
+          mock: true,
           method: 'post',
           data: data
         }).then((response) => {

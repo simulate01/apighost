@@ -16,7 +16,7 @@ function getIPAdress () {
 
 cooking.set({
   entry: {
-    app: [ 'babel-polyfill', './src/main.js' ]
+    app: [ './src/main.js' ]
   },
   dist: './dist',
   template: {

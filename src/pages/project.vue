@@ -389,6 +389,7 @@ definitions:
       loadApis: function () {
         Server({
           url: 'api/list/1',
+          mock: true,
           method: 'get'
         }).then((response) => {
           var data = response.data

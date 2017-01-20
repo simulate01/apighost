@@ -5,7 +5,7 @@
     </div>
   </el-dialog>
 </template>
-<style lang="less" rel="stylesheet/css" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
 
 </style>
 <script type="text/ecmascript-6">

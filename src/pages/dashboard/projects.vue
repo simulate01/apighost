@@ -103,6 +103,7 @@
         Server({
           url: 'projects',
           method: 'post',
+          mock: true,
           data: data
         }).then((response) => {
           var data = response.data

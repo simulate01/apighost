@@ -3,7 +3,7 @@
     <component v-for="item in dialogs" :is="item.name"></component>
   </div>
 </template>
-<style lang="less" rel="stylesheet/css" scoped type="text/css">
+<style lang="styl" rel="stylesheet/stylus" scoped type="text/css">
   .dialogs {
 
   }

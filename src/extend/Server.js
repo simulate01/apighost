@@ -20,6 +20,9 @@ instance.interceptors.request.use(function (config) {
   if (config.needLoading) {
     window.EMA.fire('loading.show')
   }
+  if (config.mock) {
+    config.url = config.url.replace(Config.host, Config.mockhost)
+  }
   return config
 }, function (error) {
   return Promise.reject(error)
@@ -29,7 +32,21 @@ instance.interceptors.response.use(function (response) {
   if (response.config.needLoading) {
     window.EMA.fire('loading.hide')
   }
-  return response
+  var code = response.data.code
+  if (response.data.code && response.data.code != 1) {
+    switch (code) {
+      case 999:
+        window.EMA.fire('alert.show', '用户认证失败,重新登录', function () {
+          window.EMA.fire('logout')
+        })
+        break
+      default:
+        window.EMA.fire('alert.show', response.data.msg, function () {})
+    }
+    throw new Error(response)
+  } else {
+    return response
+  }
 }, function (error) {
   var status = error.response.status
   var message = error.message

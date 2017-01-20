@@ -58,7 +58,7 @@
               </el-popover>
               <a v-popover:user-tip class="header-user-dropdown-toggle" data-toggle="dropdown">
                 <img width="26" height="26" class="header-user-avatar"
-                     src="http://secure.gravatar.com/avatar/fc5654afbe167b98e93674175607b80e?s=52&amp;d=identicon"
+                     :src="userInfo.photo"
                      alt="Fc5654afbe167b98e93674175607b80e?s=52&amp;d=identicon">
                 <span class="caret"></span>
               </a>
@@ -91,6 +91,7 @@
 </style>
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
+  import Server from '../extend/Server'
 
   import {mapState} from 'vuex'
   export default {
@@ -102,8 +103,6 @@
       }
     },
     computed: mapState({
-      navIndex: state => state.app.navIndex,
-      mainNav: state => state.app.menuData,
       theme: state => state.app.theme,
       packageInfo: state => state.app.packageInfo, // 项目信息
       userInfo: state => state.userInfo // 用户信息
@@ -128,7 +127,14 @@
           type: 'warning'
         }).then(() => {
           // todo 服务端登陆接口访问
-          this.ema.fire('logout')
+          Server({
+            url: 'users/logout',
+            method: 'get'
+          }).then((response) => {
+            this.ema.fire('logout')
+          }).catch(() => {
+            this.$message('登出失败')
+          })
         }).catch(() => {
           this.$message({
             type: 'info',

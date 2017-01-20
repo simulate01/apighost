@@ -10,7 +10,7 @@ export const initMenuData = (state, data) => {
   state.app.menuData = data
 }
 export const initUserInfo = (state, data) => {
-  state.userInfo = data
+  Object.assign(state.userInfo, data)
 }
 
 export const changeActiveIndex = (state, data) => {

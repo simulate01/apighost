@@ -782,6 +782,7 @@ at
         data.pageSize = this.tableInfo.pagination.size
         Server({
           url: 'projects',
+          mock: true,
           method: 'post',
           data: data
         }).then((response) => {

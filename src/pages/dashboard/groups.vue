@@ -81,6 +81,7 @@
         Server({
           url: 'group/list',
           method: 'get',
+          mock: true,
           data: data
         }).then((response) => {
           var data = response.data

@@ -185,6 +185,7 @@ Joined <time class="js-timeago" datetime="2016-10-08T09:42:57Z" title="" data-to
         Server({
           url: 'projects',
           method: 'post',
+          mock: true,
           data: data
         }).then((response) => {
           var data = response.data
