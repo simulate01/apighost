@@ -5,19 +5,33 @@ const state = {
   projectPower: [
     {
       value: '1',
-      label: 'Owner'
+      label: '创建者'
     },
     {
       value: '2',
-      label: 'Master'
+      label: '管理员'
     },
     {
       value: '3',
-      label: 'Developer'
+      label: '开发人'
     },
     {
       value: '4',
-      label: 'Guest'
+      label: '游客'
+    }
+  ],
+  groupPower: [
+    {
+      value: '1',
+      label: '创建者'
+    },
+    {
+      value: '2',
+      label: '管理员'
+    },
+    {
+      value: '3',
+      label: '游客'
     }
   ]
 }

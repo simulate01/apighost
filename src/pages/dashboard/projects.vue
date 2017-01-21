@@ -25,25 +25,26 @@
 
         <div class="projects-list-holder">
           <ul v-if="activeName==='me'" class="projects-list content-list">
-            <router-link :to="{path:'/project',query:{group:item.group,name:item.name}}" tag="li"
-                         v-for="item in tableInfo.data" class="project-row">
+            <router-link :to="{path:'project',query:{id:item.id}}" tag="li"
+                         v-for="item in myProjects" class="project-row">
               <div class="title">
                 <div class="project">
                   <div class="dash-project-avatar">
-                    <div class="avatar project-avatar s40 identicon" style="background-color: #E8EAF6; color: #555">D
+                    <div class="avatar project-avatar s40 identicon">
+                      <img class="avatar project-avatar s40" :src="item.logo">
                     </div>
                   </div>
                   <span class="project-full-name">
-                  <router-link tag="span" to="user" class="namespace-name">
-                  用户名称
+                  <router-link tag="span" :to="{path:'user',query:{id:item.creatorId}}" class="namespace-name">
+                  {{item.creatorName}}
                   /
                   </router-link>
-                  <router-link tag="span" to="groups_index" class="namespace-name">
-                  {{item.group}}
+                  <router-link tag="span" :to="{path:'groups_index',query:{id:item.groupId}}" class="namespace-name">
+                  {{item.groupName}}
                   /
                   </router-link>
-                  <router-link tag="span" to="project" class="project-name filter-title">
-                  {{item.name}}
+                  <router-link tag="span" :to="{path:'project',query:{id:item.id}}" class="project-name filter-title">
+                  {{item.projectName}}
                   </router-link>
                   </span>
                 </div>
@@ -77,39 +78,48 @@
       return {
         activeName: 'me',
         // 一个典型列表数据格式
-        tableInfo: {
-          search: {},
-          data: [],
-          pagination: {
-            size: 10,
-            total: 0,
-            curr: 0
-          }
-        }
+        myProjects: [],
+        starProjects: []
       }
     },
     mounted: function () {
-      this.loadData(1)
+      this.loadMyProject()
     },
     methods: {
       tabHandleClick (tab) {
         this.activeName = tab.name
+        if (tab.name == 'me') {
+          this.loadMyProject()
+        } else if (tab.name == 'star') {
+          this.loadStarProject()
+        }
       },
-      loadData (pageId) {
-        this.tableInfo.pagination.curr = pageId
-        var data = Object.assign({}, this.tableInfo.search)
-        data.pageId = pageId - 1
-        data.pageSize = this.tableInfo.pagination.size
+      loadMyProject: function () {
         Server({
-          url: 'projects',
-          method: 'post',
+          url: 'project/myproject',
+          method: 'get',
           mock: true,
-          data: data
+          data: {
+            count: 100,
+            start: 0
+          }
         }).then((response) => {
-          var data = response.data
-          // 设置分页信息
-          this.tableInfo.pagination.total = data.totalNum
-          this.tableInfo.data = data.list
+          this.myProjects = response.data.data
+        }).catch(() => {
+
+        })
+      },
+      loadStarProject: function () {
+        Server({
+          url: 'project/myproject',
+          method: 'get',
+          mock: true,
+          data: {
+            count: 100,
+            start: 0
+          }
+        }).then((response) => {
+          this.starProjects = response.data.data
         }).catch(() => {
 
         })

@@ -10,30 +10,45 @@
       <div class="content">
         <div class="top-area">
           <el-tabs class="nav-links" :active-name="activeName" @tab-click="tabHandleClick">
+            <el-tab-pane label="所有组" name="all"></el-tab-pane>
             <el-tab-pane label="我的组" name="me"></el-tab-pane>
-            <el-tab-pane label="我参加的组" name="more"></el-tab-pane>
           </el-tabs>
           <div class="nav-controls">
             <router-link class="btn btn-new" to="groups_new">新建分组
-            </router-link></div>
+            </router-link>
+          </div>
         </div>
-        <ul v-if="activeName==='me'" class="content-list">
-          <li v-for="item in tableInfo.data" class="group-row">
+        <ul v-if="activeName==='all'" class="content-list">
+          <li v-for="item in allGroup" class="group-row">
             <img class="avatar s40 hidden-xs"
-                 src="http://secure.gravatar.com/avatar/fc5654afbe167b98e93674175607b80e?s=52&d=identicon"
-                 alt="No group avatar">
+                 :src="item.logo"
+                 alt="">
             <div class="title">
-              <router-link class="group-name" :to="{path:'/groups_members',query:item.name}">
-                分组名称
+              <router-link class="group-name" :to="{path:'groups_index',query:{id:item.id}}">
+                {{item.name}}
               </router-link>
-              as <span>Owner</span>
+              我是 <span>{{item.role | groupRole}}</span>
             </div>
             <div class="description">
               <p>{{item.description}}</p>
             </div>
           </li>
         </ul>
-        <ul v-if="activeName==='more'" class="content-list">
+        <ul v-if="activeName==='me'" class="content-list">
+          <li v-for="item in myGroup" class="group-row">
+            <img class="avatar s40 hidden-xs"
+                 :src="item.logo"
+                 alt="">
+            <div class="title">
+              <router-link class="group-name" :to="{path:'/groups_members',query:item.name}">
+                {{item.name}}
+              </router-link>
+              我是 <span>{{item.role | groupRole}}</span>
+            </div>
+            <div class="description">
+              <p>{{item.description}}</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -53,43 +68,39 @@
     name: 'dashboard_groups',
     data () {
       return {
-        activeName: 'me',
+        activeName: 'all',
         // 一个典型列表数据格式
-        tableInfo: {
-          search: {},
-          data: [],
-          pagination: {
-            size: 10,
-            total: 0,
-            curr: 0
-          }
-        }
+        allGroup: [],
+        myGroup: []
       }
     },
     mounted: function () {
-      this.loadData(1)
+      this.loadData(0)
     },
     methods: {
       tabHandleClick (tab) {
         this.activeName = tab.name
+        if (tab.name == 'all') {
+          this.loadData(0)
+        } else if (tab.name == 'me') {
+          this.loadData(1)
+        }
       },
-      loadData (pageId) {
-        this.tableInfo.pagination.curr = pageId
-        var data = Object.assign({}, this.tableInfo.search)
-        data.pageId = pageId - 1
-        data.pageSize = this.tableInfo.pagination.size
+      loadData (type) {
         Server({
-          url: 'group/list',
+          url: 'project/group',
           method: 'get',
           mock: true,
-          data: data
+          params: {
+            type: type
+          }
         }).then((response) => {
-          var data = response.data
-          // 设置分页信息
-          this.tableInfo.pagination.total = data.totalNum
-          this.tableInfo.data = data.list
+          if (type === 0) {
+            this.allGroup = response.data.data
+          } else if (type === 1) {
+            this.myGroup = response.data.data
+          }
         }).catch(() => {
-
         })
       },
       search () {

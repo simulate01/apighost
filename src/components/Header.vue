@@ -58,8 +58,7 @@
               </el-popover>
               <a v-popover:user-tip class="header-user-dropdown-toggle" data-toggle="dropdown">
                 <img width="26" height="26" class="header-user-avatar"
-                     :src="userInfo.photo"
-                     alt="Fc5654afbe167b98e93674175607b80e?s=52&amp;d=identicon">
+                     :src="userInfo.photo">
                 <span class="caret"></span>
               </a>
             </li>
@@ -92,7 +91,6 @@
 <script type="text/ecmascript-6">
   import BaseComponent from 'src/extend/BaseComponent'
   import Server from '../extend/Server'
-
   import {mapState} from 'vuex'
   export default {
     mixins: [ BaseComponent ],
