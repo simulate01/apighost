@@ -7,10 +7,20 @@
     <div class="row prepend-top-default">
       <div class="col-lg-3 profile-settings-sidebar">
         <h4 class="prepend-top-0">
-          新建项目
+          <div v-if="type=='new'">
+            新建项目
+          </div>
+          <div v-if="type=='edit'">
+            更新项目
+          </div>
         </h4>
         <p>
+        <div v-if="type=='new'">
           创建的项目必须在指定的一个组里面，可以自己新建分组
+        </div>
+        <div v-if="type=='edit'">
+          修改自己的项目内容
+        </div>
         </p>
       </div>
       <div class="col-lg-9">
@@ -47,8 +57,7 @@
             <el-input type="textarea" v-model="form.description"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-            <el-button>取消</el-button>
+            <el-button type="primary" @click="onSubmit">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -74,6 +83,15 @@
     mixins: [ BasePage ],
     components: {},
     name: 'projects_cnew',
+    props: {
+      type: {
+        type: String,
+        default: 'new'
+      },
+      info: {
+        type: Object
+      }
+    },
     data () {
       return {
         // 一个典型列表数据格式

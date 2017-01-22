@@ -109,165 +109,21 @@
           <div v-if="activeName==='setting'">
             <div class="project-edit-container">
               <div class="row prepend-top-default">
-                <div class="col-lg-3 profile-settings-sidebar">
-                  <h4 class="prepend-top-0">
-                    Project settings
-                  </h4>
-                </div>
-                <div class="col-lg-9">
-                  <div class="project-edit-errors"></div>
-                  <form class="edit-project" id="edit_project_50" enctype="multipart/form-data"
-                        action="/h5developer/cloudhorse" accept-charset="UTF-8" data-remote="true" method="post">
-                    <fieldset class="append-bottom-0">
-                      <div class="form-group">
-                        <label class="label-light" for="project_name">Project name
-                        </label><input class="form-control" id="project_name_edit" type="text" value="cloudhorse"
-                                       name="project[name]"
-                                       style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
-                      </div>
-                      <div class="form-group">
-                        <label class="label-light" for="project_description">Project description
-                          <span class="light">(optional)</span>
-                        </label><textarea class="form-control" rows="3" maxlength="250" name="project[description]"
-                                          id="project_description">云马客服项目</textarea>
-                      </div>
-                    </fieldset>
-
-                    <input type="submit" name="commit" value="Save changes" class="btn btn-save">
-                  </form>
-                </div>
+                <c-new type="edit"></c-new>
               </div>
               <div class="row prepend-top-default"></div>
-              <hr>
-
-
-              <div class="row prepend-top-default">
-                <div class="col-lg-3">
-                  <h4 class="prepend-top-0 warning-title">
-                    Rename repository
-                  </h4>
-                </div>
-                <div class="col-lg-9">
-
-
-                  <form class="edit_project" id="edit_project_50" action="/h5developer/cloudhorse"
-                        accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input
-                      type="hidden" name="_method" value="patch"><input type="hidden" name="authenticity_token"
-                                                                        value="8C+iN3H8KxqOXUMQeu7Zb9KUa8DQUEtVTRWJ3e9i2mJJ3raC28C9387DY2NEGQY8WeoTLVYgdmWAC2CJxvt8Lg==">
-                    <div class="form-group project_name_holder">
-                      <label class="label-light" for="project_name">Project name
-                      </label>
-                      <div class="form-group">
-                        <input class="form-control" type="text" value="cloudhorse" name="project[name]"
-                               id="project_name">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="label-light" for="project_path"><span>Path</span>
-                      </label>
-                      <div class="form-group">
-                        <div class="input-group">
-                          <div class="input-group-addon">
-                            http://code.ymmoa.com/h5developer/
-                          </div>
-                          <input class="form-control" type="text" value="cloudhorse" name="project[path]"
-                                 id="project_path">
-                        </div>
-                      </div>
-                      <ul>
-                        <li>Be careful. Renaming a project's repository can have unintended side effects.</li>
-                        <li>You will need to update your local repositories to point to the new location.</li>
-                      </ul>
-                    </div>
-                    <input type="submit" name="commit" value="Rename project" class="btn btn-warning">
-                  </form>
-                </div>
-              </div>
-              <hr>
-              <div class="row prepend-top-default">
-                <div class="col-lg-3">
-                  <h4 class="prepend-top-0 danger-title">
-                    Transfer project
-                  </h4>
-                </div>
-                <div class="col-lg-9">
-                  <form class="edit_project" action="/h5developer/cloudhorse/transfer" accept-charset="UTF-8"
-                        data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden"
-                                                                                                           name="_method"
-                                                                                                           value="put">
-                    <div class="form-group">
-                      <label class="label-light" for="new_namespace_id"><span>Namespace</span>
-                      </label>
-                      <div class="form-group">
-                        <div class="select2-container select2" id="s2id_new_namespace_id" style="width: 205px;"><a
-                            href="javascript:void(0)" class="select2-choice" tabindex="-1"> <span class="select2-chosen"
-                                                                                                  id="select2-chosen-4">h5developer</span><abbr
-                            class="select2-search-choice-close"></abbr> <span class="select2-arrow" role="presentation"><b
-                            role="presentation"></b></span></a><label for="s2id_autogen4" class="select2-offscreen">Namespace
-                        </label><input class="select2-focusser select2-offscreen" type="text" aria-haspopup="true"
-                                       role="button" aria-labelledby="select2-chosen-4" id="s2id_autogen4">
-                          <div class="select2-drop select2-display-none select2-with-searchbox">
-                            <div class="select2-search"><label for="s2id_autogen4_search" class="select2-offscreen">Namespace
-                            </label> <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off"
-                                            spellcheck="false" class="select2-input" role="combobox"
-                                            aria-expanded="true" aria-autocomplete="list" aria-owns="select2-results-4"
-                                            id="s2id_autogen4_search" placeholder=""></div>
-                            <ul class="select2-results" role="listbox" id="select2-results-4"></ul>
-                          </div>
-                        </div>
-                        <select name="new_namespace_id" id="new_namespace_id" class="select2" tabindex="-1" title="Namespace
-" style="display: none;">
-                          <option value="">Choose a project namespace</option>
-                          <optgroup label="Groups">
-                            <option data-options-parent="groups" value="41">cloudhorse</option>
-                            <option data-options-parent="groups" value="96">component</option>
-                            <option data-options-parent="groups" selected="selected" value="50">h5developer</option>
-                            <option data-options-parent="groups" value="102">util</option>
-                          </optgroup>
-                          <optgroup label="Users">
-                            <option data-options-parent="users" value="36">王坤明</option>
-                          </optgroup>
-                        </select>
-                      </div>
-                      <ul>
-                        <li>Be careful. Changing the project's namespace can have unintended side effects.</li>
-                        <li>You can only transfer the project to namespaces you manage.</li>
-                        <li>You will need to update your local repositories to point to the new location.</li>
-                        <li>Project visibility level will be changed to match namespace rules when transfering to a
-                          group.
-                        </li>
-                      </ul>
-                    </div>
-                    <input type="submit" name="commit" value="Transfer project" class="btn btn-remove js-confirm-danger"
-                           data-confirm-danger-message="You are going to transfer h5developer / cloudhorse to another owner. Are you ABSOLUTELY sure?">
-                  </form>
-                </div>
-              </div>
               <hr>
               <div class="row prepend-top-default append-bottom-default">
                 <div class="col-lg-3">
                   <h4 class="prepend-top-0 danger-title">
-                    Remove project
+                    删除项目
                   </h4>
                   <p class="append-bottom-0">
-                    Removing the project will delete its repository and all related resources including issues, merge
-                    requests etc.
+                    删除项目是不可逆的，确认
                   </p>
                 </div>
                 <div class="col-lg-9">
-                  <form action="/h5developer/cloudhorse" accept-charset="UTF-8" method="post"><input name="utf8"
-                                                                                                     type="hidden"
-                                                                                                     value="✓"><input
-                      type="hidden" name="_method" value="delete"><input type="hidden" name="authenticity_token"
-                                                                         value="zRey1MX7zu6lJeiFRbH9G0YGpw1LSZ1r5gf7iHtDc3905qZhb8dYK+W7yPZ7RiJIzXjf4M05oFsrGRLcUtrVMw==">
-                    <p>
-                      <strong>Removed projects cannot be restored!</strong>
-                    </p>
-                    <input class="btn btn-remove js-confirm-danger" data-confirm-danger-message="You are going to remove h5developer / cloudhorse.
- Removed project CANNOT be restored!
- Are you ABSOLUTELY sure?" type="submit" value="Remove project"><input type="hidden" name="authenticity_token"
-                                                                       value="tbws4z1M978f/YukCHMYbPiBfldUfVDujbCoENZNuEYMTThWl3Bhel9jq9c2hMc/c/8GutINbd5ArkFE/9QeCg==">
-                  </form>
+                  <el-button type="danger" @click="delectProject">删除</el-button>
                 </div>
               </div>
             </div>
@@ -320,10 +176,11 @@
   import Clipboard from 'clipboard'
   import DocViewer from 'src/components/DocViewer'
   import jsYaml from 'js-yaml'
+  import CNew from './projects/CNew.vue'
 
   export default{
     mixins: [ BasePage ],
-    components: { Member, DocViewer },
+    components: { Member, DocViewer, CNew },
     name: 'project',
     data: function () {
       return {
@@ -404,6 +261,27 @@ definitions:
       },
       handleChange: function () {
 
+      },
+      /**
+       * 删除当项目
+       */
+      delectProject: function () {
+        this.$confirm('确认删除', '提示', {
+          type: 'warning'
+        }).then(() => {
+          Server({
+            url: 'project/project',
+            method: 'delete',
+            data: {
+              id: ''
+            },
+          }).then((response) => {
+            this.$router.push({ path: 'dashboard_projects' })
+          }).catch(() => {
+          })
+        }).catch(() => {
+          this.$message('已取消')
+        })
       }
     }
   }
